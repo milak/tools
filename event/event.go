@@ -17,16 +17,16 @@
 //   }
 // 3 - register
 //   var myListener MyListener
-//   event.EventBus.AddListener(myListener)
+//   event.Bus.AddListener(myListener)
 // 4 - fire event
-//   event.EventBus.FireEvent(&MyEvent{"Hello world !"})
+//   event.Bus.FireEvent(&MyEvent{"Hello world !"})
 package event
 // The Interface an EventListener has to implement to register to the event bus
 type Listener interface {
 	Event(aEvent interface{})
 }
 // A global instance of EventBus
-var EventBus EventBus
+var Bus EventBus
 type EventBus struct {
 	listeners		[]Listener
 }
