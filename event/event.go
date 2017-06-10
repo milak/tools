@@ -26,16 +26,16 @@ type Listener interface {
 	Event(aEvent interface{})
 }
 // A global instance of EventBus
-var EventBus eventBus
-type eventBus struct {
+var EventBus EventBus
+type EventBus struct {
 	listeners		[]Listener
 }
 // Register a listener for events
-func (this *eventBus) AddListener(aListener Listener) {
+func (this *EventBus) AddListener(aListener Listener) {
 	this.listeners = append(this.listeners,aListener)
 }
 // Remove a previously registered listener
-func (this *eventBus) RemoveListener(aListener Listener) {
+func (this *EventBus) RemoveListener(aListener Listener) {
 	for i,l := range this.listeners {
 		if l == aListener {
 			this.listeners = append(this.listeners[0:i],this.listeners[i:]...)
@@ -46,7 +46,7 @@ func (this *eventBus) RemoveListener(aListener Listener) {
 // Fire an event
 // Every listener, is called as a new thread :
 // go listener.Event(aEvent)
-func (this *eventBus) FireEvent(aEvent interface{}) {
+func (this *EventBus) FireEvent(aEvent interface{}) {
 	for _,listener := range this.listeners {
 		go listener.Event(aEvent)
 	}
