@@ -1,6 +1,7 @@
 // A very simple event bus
 // Simple event bus that allows to register as a listener.
-// How to use : 
+// How to use :
+//
 // 1 - define an event :
 //   type MyEvent struct {
 //     MyInfo string
