@@ -1,9 +1,4 @@
 // A very simple event bus
-package event
-
-import (
-)
-//
 // Simple event bus that allows to register as a listener.
 // How to use : 
 // 1 - define an event :
@@ -24,18 +19,21 @@ import (
 // event.EventBus.AddListener(myListener)
 // 4 - fire event
 // event.EventBus.FireEvent(&MyEvent{"Hello world !"})
-//
+package event
+// The Interface an EventListener has to implement to register to the event bus
 type Listener interface {
 	Event(aEvent interface{})
 }
 // A global instance of EventBus
-var EventBus eventBus 
+var EventBus eventBus
 type eventBus struct {
 	listeners		[]Listener
 }
+// Register a listener for events
 func (this *eventBus) AddListener(aListener Listener) {
 	this.listeners = append(this.listeners,aListener)
 }
+// Remove a previously registered listener
 func (this *eventBus) RemoveListener(aListener Listener) {
 	for i,l := range this.listeners {
 		if l == aListener {
@@ -44,6 +42,9 @@ func (this *eventBus) RemoveListener(aListener Listener) {
 		}
 	}
 }
+// Fire an event
+// Every listener, is called as a new thread :
+// go listener.Event(aEvent)
 func (this *eventBus) FireEvent(aEvent interface{}) {
 	for _,listener := range this.listeners {
 		go listener.Event(aEvent)
