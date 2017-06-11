@@ -3,30 +3,111 @@ import (
 	"net/http"
 	"strings"
 )
-var packageName string
-func Listen(aRoot string, aPort string, aPackageName string){
-   packageName = aPackageName
+var objectMap map[string]interface{}
+type get interface {
+	Get(w http.ResponseWriter, req *http.Request)
+}
+type post interface {
+	Post(w http.ResponseWriter, req *http.Request)
+}
+type del interface {
+	Delete(w http.ResponseWriter, req *http.Request)
+}
+type put interface {
+	Put(w http.ResponseWriter, req *http.Request)
+}
+/*
+Listen on port aPort and the root aRoot. The map given as argument is used to call objects according the url.
+
+Example :
+
+for a call of http://host:8080/myApp/API/client
+  // Declare client object :
+  type client struct {
+  }
+  func (this *client) Get(w http.ResponseWriter, req *http.Request) {
+     // process
+  }
+  // register the client object
+  objectMap := make(map[string]interface{})
+  objectMap["client"] = $client{}
+  // listen
+  network.Listen("myApp/API","8080",objectMap)
+*/
+func Listen(aRoot string, aPort string, aObjectMap map[string]interface{}){
+   objectMap = aObjectMap
    http.HandleFunc(aRoot, internalHttpListener)
    http.ListenAndServe(":"+aPort, nil)
 }
-func root(w http.ResponseWriter, req *http.Request){
-	w.Write([]byte("Milak rest API"))
+func root(w http.ResponseWriter, req *http.Request, aError string){
+	w.Write([]byte("<html><body>"))
+	w.Write([]byte("<h1>Milak rest API</h1>"))
+	if len(aError) != 0 {
+		w.Write([]byte("Error : <span style='color:red'>"+aError+"</span><br/>"))
+	}
+	w.Write([]byte("Available objects : <br/>"))
+	w.Write([]byte("<table style='width:100%;border:solid 1px'>"))
+	w.Write([]byte("<tr><th>object</th><th>get</th></tr>"))
+	for k,o := range objectMap {
+		w.Write([]byte("<tr><td>"+k+"</td>"))
+		_, ok := o.(get)
+		if ok {
+		    w.Write([]byte("<td>true</td></tr>"))
+		} else {
+			w.Write([]byte("<td>false</td></tr>"))
+		}
+	}
+	w.Write([]byte("</table>"))
+	w.Write([]byte("</body></html>"))
 }
 func internalHttpListener(w http.ResponseWriter, req *http.Request) {
 	path := req.URL.Path
-	if len(path) == 0 {
-		root(w,req)
+	if len(path) == 0 || path == "/" {
+		root(w,req,"")
 	} else {
 		if path[0] == '/' {
 			path = path[1:]
 		}
-		w.Write([]byte(path))
 		pos := strings.Index(path, "/")
-		var object string
+		var objectName string
 		if pos == -1 {
-			object = path[0:pos]
+			objectName = path[0:]
 		} else {
-			object = path[0:]
+			objectName = path[0:pos]
+		}
+		object := objectMap[objectName]
+		if object == nil {
+			root(w,req,"Object not found " + objectName)
+		} else {
+			if req.Method == http.MethodGet {
+				theObject, ok := object.(get)
+				if ok {
+				    theObject.Get(w, req)
+				} else {
+					root(w,req,"Get method not found on " + objectName)
+				}
+			} else if req.Method == http.MethodPost {
+				theObject, ok := object.(post)
+				if ok {
+				    theObject.Post(w, req)
+				} else {
+					root(w,req,"Post method not found on " + objectName)
+				}
+			} else if req.Method == http.MethodDelete {
+				theObject, ok := object.(del)
+				if ok {
+				    theObject.Delete(w, req)
+				} else {
+					root(w,req,"Delete method not found on " + objectName)
+				}
+			} else if req.Method == http.MethodPut {
+				theObject, ok := object.(put)
+				if ok {
+				    theObject.Put(w, req)
+				} else {
+					root(w,req,"Put method not found on " + objectName)
+				}
+			}
 		}
 	}
 }
