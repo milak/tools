@@ -3,6 +3,7 @@ import (
 	"net/http"
 	"strings"
 )
+var contextRoot string
 var objectMap map[string]interface{}
 type get interface {
 	Get(w http.ResponseWriter, req *http.Request)
@@ -17,7 +18,7 @@ type put interface {
 	Put(w http.ResponseWriter, req *http.Request)
 }
 /*
-Listen on port aPort and the root aRoot. The map given as argument is used to call objects according the url.
+Listen on port aPort and the context root aRoot. The map given as argument is used to call objects according the url.
 
 Example :
 
@@ -35,9 +36,13 @@ for a call of http://host:8080/myApp/API/client
   network.Listen("myApp/API","8080",objectMap)
 */
 func Listen(aRoot string, aPort string, aObjectMap map[string]interface{}){
-   objectMap = aObjectMap
-   http.HandleFunc(aRoot, internalHttpListener)
-   http.ListenAndServe(":"+aPort, nil)
+	if !strings.HasSuffix(aRoot, "/") {
+		aRoot = aRoot + "/"
+	}
+	contextRoot = aRoot
+	objectMap = aObjectMap
+	http.HandleFunc(aRoot, internalHttpListener)
+	http.ListenAndServe(":"+aPort, nil)
 }
 func root(w http.ResponseWriter, req *http.Request, aError string){
 	w.Write([]byte("<html><body>"))
@@ -47,21 +52,42 @@ func root(w http.ResponseWriter, req *http.Request, aError string){
 	}
 	w.Write([]byte("Available objects : <br/>"))
 	w.Write([]byte("<table style='width:100%;border:solid 1px'>"))
-	w.Write([]byte("<tr><th>object</th><th>get</th></tr>"))
+	w.Write([]byte("<thead style='background-color:#9090F0'><tr><th>object</th><th>get</th><th>post</th><th>put</th><th>delete</th></tr></thead>"))
+	w.Write([]byte("<tbody>"))
 	for k,o := range objectMap {
 		w.Write([]byte("<tr><td>"+k+"</td>"))
 		_, ok := o.(get)
 		if ok {
-		    w.Write([]byte("<td>true</td></tr>"))
+		    w.Write([]byte("<td><a href='"+k+"'>call</a></td>"))
 		} else {
-			w.Write([]byte("<td>false</td></tr>"))
+			w.Write([]byte("<td><i>---</i></td>"))
+		}
+		_, ok = o.(post)
+		if ok {
+		    w.Write([]byte("<td><form action='"+k+"' method='POST'><input type='submit'></input></form></td>"))
+		} else {
+			w.Write([]byte("<td><i>---</i></td>"))
+		}
+		_, ok = o.(put)
+		if ok {
+		    w.Write([]byte("<td><form action='"+k+"' method='PUT'><input type='submit'></input></form></td>"))
+		} else {
+			w.Write([]byte("<td><i>---</i></td>"))
+		}
+		_, ok = o.(del)
+		if ok {
+		    w.Write([]byte("<td><form action='"+k+"' method='DELETE'><input type='submit'></input></form></td></tr>"))
+		} else {
+			w.Write([]byte("<td><i>---</i></td></tr>"))
 		}
 	}
+	w.Write([]byte("</tbody>"))
 	w.Write([]byte("</table>"))
 	w.Write([]byte("</body></html>"))
 }
 func internalHttpListener(w http.ResponseWriter, req *http.Request) {
 	path := req.URL.Path
+	path = path[len(contextRoot):]
 	if len(path) == 0 || path == "/" {
 		root(w,req,"")
 	} else {
