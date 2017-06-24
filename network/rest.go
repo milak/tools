@@ -5,15 +5,19 @@ import (
 )
 var contextRoot string
 var objectMap map[string]interface{}
+/* Interface of an object supporting GET method */
 type get interface {
 	Get(w http.ResponseWriter, req *http.Request)
 }
+/* Interface of an object supporting POST method */
 type post interface {
 	Post(w http.ResponseWriter, req *http.Request)
 }
+/* Interface of an object supporting DEL method */
 type del interface {
 	Delete(w http.ResponseWriter, req *http.Request)
 }
+/* Interface of an object supporting PUT method */
 type put interface {
 	Put(w http.ResponseWriter, req *http.Request)
 }
@@ -44,6 +48,7 @@ func Listen(aRoot string, aPort string, aObjectMap map[string]interface{}){
 	http.HandleFunc(aRoot, internalHttpListener)
 	http.ListenAndServe(":"+aPort, nil)
 }
+/* This method displays the root page */
 func root(w http.ResponseWriter, req *http.Request, aError string){
 	w.Write([]byte("<html><body>"))
 	w.Write([]byte("<h1>Milak rest API</h1>"))
@@ -85,6 +90,7 @@ func root(w http.ResponseWriter, req *http.Request, aError string){
 	w.Write([]byte("</table>"))
 	w.Write([]byte("</body></html>"))
 }
+/* The listener called by the HttpListener */
 func internalHttpListener(w http.ResponseWriter, req *http.Request) {
 	path := req.URL.Path
 	path = path[len(contextRoot):]
@@ -133,6 +139,8 @@ func internalHttpListener(w http.ResponseWriter, req *http.Request) {
 				} else {
 					root(w,req,"Put method not found on " + objectName)
 				}
+			} else {
+				root(w,req,"Unsupported method " + req.Method)
 			}
 		}
 	}
