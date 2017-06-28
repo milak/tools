@@ -3,8 +3,6 @@ import (
 	"net/http"
 	"strings"
 )
-var contextRoot string
-var objectMap map[string]interface{}
 /* Interface of an object supporting GET method */
 type get interface {
 	Get(w http.ResponseWriter, req *http.Request)
@@ -43,9 +41,7 @@ func Listen(aRoot string, aPort string, aObjectMap map[string]interface{}){
 	if !strings.HasSuffix(aRoot, "/") {
 		aRoot = aRoot + "/"
 	}
-	contextRoot = aRoot
-	objectMap = aObjectMap
-	http.HandleFunc(aRoot, internalHttpListener)
+	http.HandleFunc(aRoot, NewRestListener(aRoot,aObjectMap))
 	http.ListenAndServe(":"+aPort, nil)
 }
 /* This method displays the root page */
@@ -90,8 +86,12 @@ func root(w http.ResponseWriter, req *http.Request, aError string){
 	w.Write([]byte("</table>"))
 	w.Write([]byte("</body></html>"))
 }
+type restListener struct {
+	contextRoot string
+	objectMap map[string]interface{}
+}
 /* The listener called by the HttpListener */
-func internalHttpListener(w http.ResponseWriter, req *http.Request) {
+func (this *restListener) internalHttpListener(w http.ResponseWriter, req *http.Request) {
 	path := req.URL.Path
 	path = path[len(contextRoot):]
 	if len(path) == 0 || path == "/" {
@@ -144,4 +144,11 @@ func internalHttpListener(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 	}
+}
+/*
+ For specific use, you could need to use
+*/
+func NewRestListener(aRoot string, aObjectMap map[string]interface{}){
+	var restListener := &restListener{contextRoot : aRoot, objectMap : aObjectMap}
+	return restListener.internalHttpListener
 }
