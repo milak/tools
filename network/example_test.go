@@ -17,7 +17,7 @@ func (this *client) Get(w http.ResponseWriter, req *http.Request) {
 func ExampleListen() {
   // register the client object
   objectMap := make(map[string]interface{})
-  objectMap["client"] = $client{}
+  objectMap["client"] = &client{}
   // listen
   network.Listen("myApp/API","8080",objectMap)
 }
