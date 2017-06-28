@@ -7,14 +7,14 @@ func ExampleGetLocalIP() {
      fmt.Println("IP address is",address)
   }
 }
+// Declare client object :
+type client struct {
+}
+func (this *client) Get(w http.ResponseWriter, req *http.Request) {
+   // process
+}
 /* Sample for a call of http://host:8080/myApp/API/client */
 func ExampleListen() {
-  // Declare client object :
-  type client struct {
-  }
-  func (this *client) Get(w http.ResponseWriter, req *http.Request) {
-     // process
-  }
   // register the client object
   objectMap := make(map[string]interface{})
   objectMap["client"] = $client{}
