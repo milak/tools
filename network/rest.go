@@ -20,7 +20,10 @@ type put interface {
 	Put(w http.ResponseWriter, req *http.Request)
 }
 /*
-Listen on port aPort and the context root aRoot. The map given as argument is used to call objects according the url.
+Listen on port 'aPort' and the context root 'aRoot'. The map given as argument is used to call objects according the url.
+Example : objectMap["client"] = &MyClientObject{}
+Where "client" is the object used in th URL : http://myApp/API/client and MyClientObject is the target object called.
+This method i a all-in-one method. For specific use, you can use NewRestListener() method.
 */
 func Listen(aRoot string, aPort string, aObjectMap map[string]interface{}){
 	if !strings.HasSuffix(aRoot, "/") {
@@ -71,6 +74,7 @@ func root(w http.ResponseWriter, req *http.Request, aError string){
 	w.Write([]byte("</table>"))
 	w.Write([]byte("</body></html>"))
 }
+/* Internal object that will be used for listening http calls */
 type restListener struct {
 	contextRoot string
 	objectMap map[string]interface{}
@@ -131,7 +135,7 @@ func (this *restListener) internalHttpListener(w http.ResponseWriter, req *http.
 	}
 }
 /*
- For specific use, you could need to use
+ For specific use, you could need to use NewRestListener insteed Listen method.
 */
 func NewRestListener(aRoot string, aObjectMap map[string]interface{}){
 	restListener := &restListener{contextRoot : aRoot, objectMap : aObjectMap}
