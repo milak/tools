@@ -43,7 +43,7 @@ func root(w http.ResponseWriter, req *http.Request, aError string){
 	w.Write([]byte("<table style='width:100%;border:solid 1px'>"))
 	w.Write([]byte("<thead style='background-color:#9090F0'><tr><th>object</th><th>get</th><th>post</th><th>put</th><th>delete</th></tr></thead>"))
 	w.Write([]byte("<tbody>"))
-	for k,o := range objectMap {
+	for k,o := range this.objectMap {
 		w.Write([]byte("<tr><td>"+k+"</td>"))
 		_, ok := o.(get)
 		if ok {
@@ -82,7 +82,7 @@ type restListener struct {
 /* The listener called by the HttpListener */
 func (this *restListener) internalHttpListener(w http.ResponseWriter, req *http.Request) {
 	path := req.URL.Path
-	path = path[len(contextRoot):]
+	path = path[len(this.contextRoot):]
 	if len(path) == 0 || path == "/" {
 		root(w,req,"")
 	} else {
@@ -96,7 +96,7 @@ func (this *restListener) internalHttpListener(w http.ResponseWriter, req *http.
 		} else {
 			objectName = path[0:pos]
 		}
-		object := objectMap[objectName]
+		object := this.objectMap[objectName]
 		if object == nil {
 			root(w,req,"Object not found " + objectName)
 		} else {
