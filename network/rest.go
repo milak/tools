@@ -137,7 +137,7 @@ func (this *restListener) internalHttpListener(w http.ResponseWriter, req *http.
 /*
 For specific use, you could need to use NewRestListener insteed Listen() method.
 */
-func NewRestListener(aRoot string, aObjectMap map[string]interface{}){
+func NewRestListener(aRoot string, aObjectMap map[string]interface{}) (func(w http.ResponseWriter, req *http.Request)) {
 	restListener := &restListener{contextRoot : aRoot, objectMap : aObjectMap}
 	return restListener.internalHttpListener
 }
