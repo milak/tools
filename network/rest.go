@@ -21,21 +21,6 @@ type put interface {
 }
 /*
 Listen on port aPort and the context root aRoot. The map given as argument is used to call objects according the url.
-
-Example :
-
-for a call of http://host:8080/myApp/API/client
-  // Declare client object :
-  type client struct {
-  }
-  func (this *client) Get(w http.ResponseWriter, req *http.Request) {
-     // process
-  }
-  // register the client object
-  objectMap := make(map[string]interface{})
-  objectMap["client"] = $client{}
-  // listen
-  network.Listen("myApp/API","8080",objectMap)
 */
 func Listen(aRoot string, aPort string, aObjectMap map[string]interface{}){
 	if !strings.HasSuffix(aRoot, "/") {
