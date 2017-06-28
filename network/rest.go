@@ -32,8 +32,69 @@ func Listen(aRoot string, aPort string, aObjectMap map[string]interface{}){
 	http.HandleFunc(aRoot, NewRestListener(aRoot,aObjectMap))
 	http.ListenAndServe(":"+aPort, nil)
 }
+
+/* Internal object that will be used for listening http calls */
+type restListener struct {
+	contextRoot string
+	objectMap map[string]interface{}
+}
+/* The listener called by the HttpListener */
+func (this *restListener) internalHttpListener(w http.ResponseWriter, req *http.Request) {
+	path := req.URL.Path
+	path = path[len(this.contextRoot):]
+	if len(path) == 0 || path == "/" {
+		this.root(w,req,"")
+	} else {
+		if path[0] == '/' {
+			path = path[1:]
+		}
+		pos := strings.Index(path, "/")
+		var objectName string
+		if pos == -1 {
+			objectName = path[0:]
+		} else {
+			objectName = path[0:pos]
+		}
+		object := this.objectMap[objectName]
+		if object == nil {
+			this.root(w,req,"Object not found " + objectName)
+		} else {
+			if req.Method == http.MethodGet {
+				theObject, ok := object.(get)
+				if ok {
+				    theObject.Get(w, req)
+				} else {
+					this.root(w,req,"Get method not found on " + objectName)
+				}
+			} else if req.Method == http.MethodPost {
+				theObject, ok := object.(post)
+				if ok {
+				    theObject.Post(w, req)
+				} else {
+					this.root(w,req,"Post method not found on " + objectName)
+				}
+			} else if req.Method == http.MethodDelete {
+				theObject, ok := object.(del)
+				if ok {
+				    theObject.Delete(w, req)
+				} else {
+					this.root(w,req,"Delete method not found on " + objectName)
+				}
+			} else if req.Method == http.MethodPut {
+				theObject, ok := object.(put)
+				if ok {
+				    theObject.Put(w, req)
+				} else {
+					this.root(w,req,"Put method not found on " + objectName)
+				}
+			} else {
+				this.root(w,req,"Unsupported method " + req.Method)
+			}
+		}
+	}
+}
 /* This method displays the root page */
-func root(w http.ResponseWriter, req *http.Request, aError string){
+func (this *restListener) root(w http.ResponseWriter, req *http.Request, aError string){
 	w.Write([]byte("<html><body>"))
 	w.Write([]byte("<h1>Milak rest API</h1>"))
 	if len(aError) != 0 {
@@ -73,66 +134,6 @@ func root(w http.ResponseWriter, req *http.Request, aError string){
 	w.Write([]byte("</tbody>"))
 	w.Write([]byte("</table>"))
 	w.Write([]byte("</body></html>"))
-}
-/* Internal object that will be used for listening http calls */
-type restListener struct {
-	contextRoot string
-	objectMap map[string]interface{}
-}
-/* The listener called by the HttpListener */
-func (this *restListener) internalHttpListener(w http.ResponseWriter, req *http.Request) {
-	path := req.URL.Path
-	path = path[len(this.contextRoot):]
-	if len(path) == 0 || path == "/" {
-		root(w,req,"")
-	} else {
-		if path[0] == '/' {
-			path = path[1:]
-		}
-		pos := strings.Index(path, "/")
-		var objectName string
-		if pos == -1 {
-			objectName = path[0:]
-		} else {
-			objectName = path[0:pos]
-		}
-		object := this.objectMap[objectName]
-		if object == nil {
-			root(w,req,"Object not found " + objectName)
-		} else {
-			if req.Method == http.MethodGet {
-				theObject, ok := object.(get)
-				if ok {
-				    theObject.Get(w, req)
-				} else {
-					root(w,req,"Get method not found on " + objectName)
-				}
-			} else if req.Method == http.MethodPost {
-				theObject, ok := object.(post)
-				if ok {
-				    theObject.Post(w, req)
-				} else {
-					root(w,req,"Post method not found on " + objectName)
-				}
-			} else if req.Method == http.MethodDelete {
-				theObject, ok := object.(del)
-				if ok {
-				    theObject.Delete(w, req)
-				} else {
-					root(w,req,"Delete method not found on " + objectName)
-				}
-			} else if req.Method == http.MethodPut {
-				theObject, ok := object.(put)
-				if ok {
-				    theObject.Put(w, req)
-				} else {
-					root(w,req,"Put method not found on " + objectName)
-				}
-			} else {
-				root(w,req,"Unsupported method " + req.Method)
-			}
-		}
-	}
 }
 /*
 For specific use, you could need to use NewRestListener insteed Listen() method.
