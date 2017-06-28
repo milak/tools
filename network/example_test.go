@@ -13,7 +13,14 @@ type client struct {
 func (this *client) Get(w http.ResponseWriter, req *http.Request) {
    // process
 }
-/* Sample for a call of http://host:8080/myApp/API/client */
+/* Sample for a call of http://host:8080/myApp/API/client
+  // Declare client object :
+  type client struct {
+  }
+  func (this *client) Get(w http.ResponseWriter, req *http.Request) {
+     // process
+  }
+*/
 func ExampleListen() {
   // Add specific listener
   http.HandleFunc("myApp/", MyListenerFunction)
