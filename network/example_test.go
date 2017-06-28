@@ -21,3 +21,6 @@ func ExampleListen() {
   // listen
   network.Listen("myApp/API","8080",objectMap)
 }
+/* */
+func ExampleNewRestListener(){
+}
