@@ -13,7 +13,7 @@ type client struct {
 func (this *client) Get(w http.ResponseWriter, req *http.Request) {
    // process
 }
-/* Sample for a call of http://host:8080/myApp/API/client
+/* Sample for a call of http://host:8080/myApp/API/client using Listen() method
   // Declare client object :
   type client struct {
   }
@@ -32,7 +32,14 @@ func ExampleListen() {
   // Listen
   network.Listen("myApp/API","8080",objectMap)
 }
-/* Sample for a call of http://host:8080/myApp/API/client */
+/* Sample for a call of http://host:8080/myApp/API/client using NewRestListener() method
+  // Declare client object :
+  type client struct {
+  }
+  func (this *client) Get(w http.ResponseWriter, req *http.Request) {
+     // process
+  }
+*/
 func ExampleNewRestListener(){
   // Add specific listener
   http.HandleFunc("myApp/", MyListenerFunction)
