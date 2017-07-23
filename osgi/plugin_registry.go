@@ -1,5 +1,7 @@
 package osgi
 import (
+	"os"
+	
 	"log"
 	"plugin"
 	"github.com/milak/tools/data"
@@ -54,7 +56,7 @@ func (this *pluginRegistry) loadPlugins(){
 			if err != nil {
 				this.context.Logger.Println("WARNING Unable to initialize plugin",file.Name(),":",err)
 			} else {
-				function.(func(*env.Context))(context)
+				function.(func(*Context))(this.context)
 			}
 		}
 	}
