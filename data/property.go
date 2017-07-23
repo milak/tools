@@ -10,7 +10,7 @@ type PropertyList struct {
 func (this *PropertyList) SetProperty(aName string, aValue interface{}){
 	p := this.GetProperty(aName)
 	if p == nil {
-		this.propeties = append(this.propeties,&Property{Name : aName, Value : aValue})
+		this.properties = append(this.properties,&Property{Name : aName, Value : aValue})
 	} else {
 		p.Value = aValue
 	}
