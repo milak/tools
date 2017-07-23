@@ -17,7 +17,7 @@ func (this *PropertyList) SetProperty(aName string, aValue interface{}){
 }
 func (this *PropertyList) GetProperty(aName string) *Property {
 	for _,p := range this.propeties {
-		if p.Name = aName {
+		if p.Name == aName {
 			return p
 		}
 	}
