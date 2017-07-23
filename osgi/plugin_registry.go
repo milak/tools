@@ -14,7 +14,7 @@ type pluginRegistry struct {
 	plugins []*plugin.Plugin
 	context *Context
 }
-func NewPluginRegistry(aPluginFolder string, aContext Context) *pluginRegistry {
+func NewPluginRegistry(aPluginFolder string, aContext *Context) *pluginRegistry {
 	result := &pluginRegistry{pluginFolder : aPluginFolder, context : aContext}
 	result.loadPlugins()
 	return result
