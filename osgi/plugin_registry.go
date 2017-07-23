@@ -2,33 +2,37 @@ package osgi
 
 import (
 	"os"
-
 	"github.com/milak/tools/data"
 	"log"
 	"plugin"
 )
-
+// The OSGI context class
 type Context struct {
 	Logger     *log.Logger
 	Properties data.PropertyList
 }
+// The PluginRegistry class
 type pluginRegistry struct {
 	pluginFolder string
 	plugins      []*plugin.Plugin
 	context      *Context
 }
-
+// Create a NewPluginRegistry with a folder name containing the plugins and an initialized context. 
+// Once created, the registry will load the plugins.
 func NewPluginRegistry(aPluginFolder string, aContext *Context) *pluginRegistry {
 	result := &pluginRegistry{pluginFolder: aPluginFolder, context: aContext}
 	result.loadPlugins()
 	return result
 }
+// Obtain the list of the loaded plugins
 func (this *pluginRegistry) GetPlugins() []*plugin.Plugin {
 	return this.plugins
 }
+// Obtain the context
 func (this *pluginRegistry) GetContext() *Context {
 	return this.context
 }
+// Load the plugins in the plugin folder
 func (this *pluginRegistry) loadPlugins() {
 	// Browse plugin directory
 	pluginDirectory, err := os.Open(this.pluginFolder)
@@ -52,6 +56,7 @@ func (this *pluginRegistry) loadPlugins() {
 		this.loadPlugin(file)
 	}
 }
+// Load one plugin
 func (this *pluginRegistry) loadPlugin(file os.FileInfo) {
 	defer func() {
 		if r := recover(); r != nil {
