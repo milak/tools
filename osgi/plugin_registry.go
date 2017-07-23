@@ -52,7 +52,7 @@ func (this *pluginRegistry) loadPlugins() {
 		this.loadPlugin(file)
 	}
 }
-func (this *pluginRegistry) loadPlugin(file os.File) {
+func (this *pluginRegistry) loadPlugin(file os.FileInfo) {
 	defer func() {
 		if r := recover(); r != nil {
 			this.context.Logger.Println("WARNING Failed to initialize plugin", file.Name(), ":", r)
