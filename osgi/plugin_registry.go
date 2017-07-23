@@ -1,8 +1,14 @@
 package osgi
 import (
+	"log"
 	"plugin"
+	"github.com/milak/tools/data"
 )
 
+type Context struct {
+	Logger *log.Logger
+	Properties data.PropertyList
+}
 type pluginRegistry struct {
 	pluginFolder string
 	plugins []*plugin.Plugin
