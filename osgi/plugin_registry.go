@@ -63,6 +63,7 @@ func (this *pluginRegistry) loadPlugin(file os.FileInfo) {
 	if err != nil {
 		this.context.Logger.Println("WARNING Plugin has no Init method", file.Name())
 	} else {
+		this.plugins = append(this.plugins,thePlugin)
 		function, err := thePlugin.Lookup("Init")
 		if err != nil {
 			this.context.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
