@@ -5,7 +5,7 @@ type Property struct {
 	Value interface{}
 }
 type PropertyList struct {
-	propeties []*Property
+	properties []*Property
 }
 func (this *PropertyList) SetProperty(aName string, aValue interface{}){
 	p := this.GetProperty(aName)
@@ -16,13 +16,13 @@ func (this *PropertyList) SetProperty(aName string, aValue interface{}){
 	}
 }
 func (this *PropertyList) GetProperty(aName string) *Property {
-	for _,p := range this.propeties {
+	for _,p := range this.properties {
 		if p.Name == aName {
 			return p
 		}
 	}
 	return nil
 }
-func (this *PropertyList) GetProperties(){
-	return this.propeties
+func (this *PropertyList) GetProperties() []*Property {
+	return this.properties
 }
