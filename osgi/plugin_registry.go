@@ -1,23 +1,25 @@
 package osgi
+
 import (
 	"os"
-	
+
+	"github.com/milak/tools/data"
 	"log"
 	"plugin"
-	"github.com/milak/tools/data"
 )
 
 type Context struct {
-	Logger *log.Logger
+	Logger     *log.Logger
 	Properties data.PropertyList
 }
 type pluginRegistry struct {
 	pluginFolder string
-	plugins []*plugin.Plugin
-	context *Context
+	plugins      []*plugin.Plugin
+	context      *Context
 }
+
 func NewPluginRegistry(aPluginFolder string, aContext *Context) *pluginRegistry {
-	result := &pluginRegistry{pluginFolder : aPluginFolder, context : aContext}
+	result := &pluginRegistry{pluginFolder: aPluginFolder, context: aContext}
 	result.loadPlugins()
 	return result
 }
@@ -27,9 +29,9 @@ func (this *pluginRegistry) GetPlugins() []*plugin.Plugin {
 func (this *pluginRegistry) GetContext() *Context {
 	return this.context
 }
-func (this *pluginRegistry) loadPlugins(){
+func (this *pluginRegistry) loadPlugins() {
 	// Browse plugin directory
-	pluginDirectory,err := os.Open(this.pluginFolder)
+	pluginDirectory, err := os.Open(this.pluginFolder)
 	if err != nil {
 		this.context.Logger.Println("WARNING No plugin directory")
 		// no plugins directory
@@ -41,23 +43,31 @@ func (this *pluginRegistry) loadPlugins(){
 		this.context.Logger.Println("WARNING Plugins directory is not a directory")
 		return
 	}
-	files,err := pluginDirectory.Readdir(0)
+	files, err := pluginDirectory.Readdir(0)
 	if err != nil {
-		this.context.Logger.Println("WARNING Unable to browse plugins directory",err)
+		this.context.Logger.Println("WARNING Unable to browse plugins directory", err)
 		return
 	}
-	for _,file := range files {
-		this.context.Logger.Println("DEBUG Loading plugin",file.Name(),"...")
-		thePlugin, err := plugin.Open("plugins/"+file.Name())
+	for _, file := range files {
+		this.loadPlugin(file)
+	}
+}
+func (this *pluginRegistry) loadPlugin(file os.File) {
+	defer func() {
+		if r := recover(); r != nil {
+			this.context.Logger.Println("WARNING Failed to initialize plugin", file.Name(), ":", r)
+		}
+	}()
+	this.context.Logger.Println("DEBUG Loading plugin", file.Name(), "...")
+	thePlugin, err := plugin.Open("plugins/" + file.Name())
+	if err != nil {
+		this.context.Logger.Println("WARNING Plugin has no Init method", file.Name())
+	} else {
+		function, err := thePlugin.Lookup("Init")
 		if err != nil {
-			this.context.Logger.Println("WARNING Plugin has no Init method",file.Name())
+			this.context.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
 		} else {
-			function,err := thePlugin.Lookup("Init")
-			if err != nil {
-				this.context.Logger.Println("WARNING Unable to initialize plugin",file.Name(),":",err)
-			} else {
-				function.(func(*Context))(this.context)
-			}
+			function.(func(*Context))(this.context)
 		}
 	}
 }
