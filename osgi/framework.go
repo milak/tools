@@ -17,7 +17,7 @@ type framework struct {
 // Create a NewPluginRegistry with a folder name containing the plugins and an initialized context. 
 // Once created, the registry will load the plugins.
 func NewFramework(aBundleFolder string, aLogger *log.Logger) *pluginRegistry {
-	result := &framework{bundleFolder: aBundleFolder, Logger aLogger}
+	result := &framework{bundleFolder: aBundleFolder, Logger : aLogger}
 	return result
 }
 func (this *framework) Start(){
