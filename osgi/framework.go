@@ -20,26 +20,26 @@ func NewFramework(aBundleFolder string, aLogger *log.Logger) *framework {
 	result := &framework{bundleFolder: aBundleFolder, Logger : aLogger}
 	return result
 }
-func (this *framework) Start(){
+func (this *Framework) Start(){
 	this.loadBundles()
 }
-func (this *framework) Stop(){
+func (this *Framework) Stop(){
 	for _,bundle := range this.bundles {
 		bundle.Stop()
 	}
 }
-func (this *framework) GetProperty(aName string) interface{} {
+func (this *Framework) GetProperty(aName string) interface{} {
 	return this.Properties.GetProperty(aName)
 }
-func (this *framework) SetProperty(aName string, aValue interface{}) {
+func (this *Framework) SetProperty(aName string, aValue interface{}) {
 	this.Properties.SetProperty(aName,aValue)
 }
 // Obtain the list of the loaded plugins
-func (this *framework) GetBundles() []Bundle {
+func (this *Framework) GetBundles() []Bundle {
 	return this.bundles
 }
 // Load the plugins in the plugin folder
-func (this *framework) loadBundles() {
+func (this *Framework) loadBundles() {
 	// Browse plugin directory
 	bundleDirectory, err := os.Open(this.bundleFolder)
 	if err != nil {
@@ -63,7 +63,7 @@ func (this *framework) loadBundles() {
 	}
 }
 // Load one plugin
-func (this *framework) loadBundle(file os.FileInfo) {
+func (this *Framework) loadBundle(file os.FileInfo) {
 	defer func() {
 		if r := recover(); r != nil {
 			this.Logger.Println("WARNING Failed to initialize bundle", file.Name(), ":", r)
