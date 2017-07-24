@@ -9,18 +9,30 @@ import (
 
 // The framework class
 type framework struct {
-	bundleFolder string
-	bundles      []*Bundle
-	context      *BundleContext
-	Logger     *log.Logger
-	Properties data.PropertyList
+	bundleFolder 	string
+	bundles      	[]*Bundle
+	Logger     		*log.Logger
+	Properties 		data.PropertyList
 }
 // Create a NewPluginRegistry with a folder name containing the plugins and an initialized context. 
 // Once created, the registry will load the plugins.
-func NewFramework(aBundleFolder string, aContext *BundleContext) *pluginRegistry {
-	result := &framework{bundleFolder: aBundleFolder, context: aContext}
-	result.loadBundles()
+func NewFramework(aBundleFolder string, aLogger *log.Logger) *pluginRegistry {
+	result := &framework{bundleFolder: aBundleFolder, Logger aLogger}
 	return result
+}
+func (this *framework) Start(){
+	result.loadBundles()
+}
+func (this *framework) Stop(){
+	for _,bundle := range this.bundles {
+		bundle.Stop()
+	}
+}
+func (this *framework) GetProperty(aName string) interface{} {
+	return this.Properties.GetProperty(aName)
+}
+func (this *framework) SetProperty(aName string, aValue interface{}) {
+	this.Properties.SetProperty(aName,aValue)
 }
 // Obtain the list of the loaded plugins
 func (this *framework) GetBundles() []*Bundle {

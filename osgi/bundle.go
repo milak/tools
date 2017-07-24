@@ -18,7 +18,6 @@ type Bundle interface {
 	GetVersion() string
 	Start()
 	Stop()
-	
 }
 type pluginBundle struct {
 	id 				string
@@ -36,7 +35,7 @@ func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext *BundleConte
 	} else {
 		result.version = "?.?.?"
 	}
-	sym, err = aPlugin.Lookup("Name")
+	sym, err = aPlugin.Lookup("SymbolicName")
 	if err == nil {
 		result.symbolicName = sym.(*string)
 	} else {
@@ -54,10 +53,16 @@ func (this *pluginBundle) GetState() int {
 	return this.state
 }
 func (this *pluginBundle) Start() {
+	if this.state == ACTIVE || this.state == STARTING{
+		return
+	}
 	this.state = STARTING
 	this.state = ACTIVE
 }
 func (this *pluginBundle) Stop() {
+	if this.state != ACTIVE {
+		return
+	}
 	this.state = STOPPING
 	this.state = RESOLVED
 }
