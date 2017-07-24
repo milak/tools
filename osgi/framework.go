@@ -84,5 +84,6 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 		} else {
 			function.(func(BundleContext))(context)
 		}
+		this.Logger.Println("INFO Bundle",bundle.GetBundleId(),"-", bundle.GetSymbolicName(), "(",bundle.GetVersion(),") loaded")
 	}
 }
