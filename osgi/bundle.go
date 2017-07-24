@@ -25,9 +25,9 @@ type pluginBundle struct {
 	symbolicName 	string
 	_plugin 		*plugin.Plugin
 	state 			int
-	bundleContext	*BundleContext
+	bundleContext	BundleContext
 }
-func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext *BundleContext) Bundle {
+func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContext) Bundle {
 	result := pluginBundle {id : uuid.New().String(), _plugin : aPlugin, state : RESOLVED}
 	sym, err := aPlugin.Lookup("Version")
 	if err == nil {
@@ -43,7 +43,7 @@ func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext *BundleConte
 	}
 	return &result
 }
-func (this *pluginBundle) GetBundleContext() *BundleContext {
+func (this *pluginBundle) GetBundleContext() BundleContext {
 	return this.bundleContext
 }
 func (this *pluginBundle) GetBundleId() string {

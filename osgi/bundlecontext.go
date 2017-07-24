@@ -4,14 +4,19 @@ import (
 	"log"
 )
 
+type BundleContext interface {
+	Logger			*log.Logger
+	GetProperty(aName string) interface{}
+}
+
 // The OSGI context class
-type BundleContext struct {
+type bundleContextImpl struct {
 	bundle 			Bundle
 	framework 		*Framework
 	Logger			*log.Logger
 }
-func NewBundleContext(aFramework *Framework) *BundleContext {
-	result := BundleContext{framework : aFramework}
+func NewBundleContext(aFramework *Framework) BundleContext {
+	result := BundleContextImpl{framework : aFramework}
 	result.Logger = aFramework.Logger
 	return &result
 }
