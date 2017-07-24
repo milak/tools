@@ -2,7 +2,6 @@ package osgi
 
 import (
 	"log"
-	"github.com/milak/tools/data"
 )
 
 // The OSGI context class
@@ -17,5 +16,5 @@ func NewBundleContext(aBundle *Bundle, aFramework *framework) *BundleContext {
 	return &result
 }
 func (this *BundleContext) GetProperty(aName string) interface{} {
-	return framework.GerProperty(aName)
+	return framework.GetProperty(aName)
 }
