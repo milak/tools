@@ -10,7 +10,7 @@ import (
 // The framework class
 type framework struct {
 	bundleFolder 	string
-	bundles      	[]*Bundle
+	bundles      	[]Bundle
 	Logger     		*log.Logger
 	Properties 		data.PropertyList
 }
@@ -35,7 +35,7 @@ func (this *framework) SetProperty(aName string, aValue interface{}) {
 	this.Properties.SetProperty(aName,aValue)
 }
 // Obtain the list of the loaded plugins
-func (this *framework) GetBundles() []*Bundle {
+func (this *framework) GetBundles() []Bundle {
 	return this.bundles
 }
 // Load the plugins in the plugin folder
