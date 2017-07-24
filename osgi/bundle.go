@@ -23,12 +23,12 @@ type pluginBundle struct {
 	id 				string
 	version 		string
 	symbolicName 	string
-	_plugin 		plugin.Plugin
+	_plugin 		*plugin.Plugin
 	state 			int
 	bundleContext	*BundleContext
 }
 func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext *BundleContext) *Bundle {
-	result := pluginBundle {id : uuid.New(), _plugin : aPlugin, state : RESOLVED}
+	result := pluginBundle {id : uuid.New().String(), _plugin : aPlugin, state : RESOLVED}
 	sym, err := aPlugin.Lookup("Version")
 	if err == nil {
 		result.version = sym.(*string)
@@ -37,7 +37,7 @@ func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext *BundleConte
 	}
 	sym, err = aPlugin.Lookup("SymbolicName")
 	if err == nil {
-		result.symbolicName = sym.(*string)
+		result.symbolicName = *sym.(*string)
 	} else {
 		result.symbolicName = aName
 	}
