@@ -8,7 +8,7 @@ import (
 )
 
 // The framework class
-type framework struct {
+type Framework struct {
 	bundleFolder 	string
 	bundles      	[]Bundle
 	Logger     		*log.Logger
