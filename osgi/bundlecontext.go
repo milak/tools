@@ -20,12 +20,12 @@ func NewBundleContext(aFramework *Framework) BundleContext {
 	result.Logger = aFramework.Logger
 	return &result
 }
-func (this *BundleContextImpl) GetLogger() *log.Logger {
+func (this *bundleContextImpl) GetLogger() *log.Logger {
 	return this.logger
 }
-func (this *BundleContextImpl) setBundle(aBundle Bundle){
+func (this *bundleContextImpl) setBundle(aBundle Bundle){
 	this.bundle = aBundle
 }
-func (this *BundleContextImpl) GetProperty(aName string) interface{} {
+func (this *bundleContextImpl) GetProperty(aName string) interface{} {
 	return this.framework.GetProperty(aName)
 }
