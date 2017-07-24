@@ -27,11 +27,11 @@ type pluginBundle struct {
 	state 			int
 	bundleContext	*BundleContext
 }
-func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext *BundleContext) *Bundle {
+func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext *BundleContext) Bundle {
 	result := pluginBundle {id : uuid.New().String(), _plugin : aPlugin, state : RESOLVED}
 	sym, err := aPlugin.Lookup("Version")
 	if err == nil {
-		result.version = sym.(*string)
+		result.version = *sym.(*string)
 	} else {
 		result.version = "?.?.?"
 	}
