@@ -7,10 +7,10 @@ import (
 // The OSGI context class
 type BundleContext struct {
 	bundle 			Bundle
-	framework 		*framework
+	framework 		*Framework
 	Logger			*log.Logger
 }
-func NewBundleContext(aFramework *framework) *BundleContext {
+func NewBundleContext(aFramework *Framework) *BundleContext {
 	result := BundleContext{framework : aFramework}
 	result.Logger = aFramework.Logger
 	return &result
