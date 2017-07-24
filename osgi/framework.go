@@ -76,7 +76,7 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 	} else {
 		context := NewBundleContext(this)
 		bundle := NewPluginBundle(thePlugin, file.Name(), context)
-		context.setBundle(bundle)
+		context.(bundleContextImpl).setBundle(bundle)
 		this.bundles = append(this.bundles,bundle)
 		function, err := thePlugin.Lookup("Init")
 		if err != nil {
