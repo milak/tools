@@ -76,13 +76,13 @@ func (this *framework) loadBundle(file os.FileInfo) {
 	} else {
 		context := NewBundleContext(this)
 		bundle := NewPluginBundle(thePlugin, file.Name(), context)
-		context.setBundle(bundle) 
-		this.plugins = append(this.bundles,bundle)
+		context.setBundle(bundle)
+		this.bundles = append(this.bundles,bundle)
 		function, err := thePlugin.Lookup("Init")
 		if err != nil {
-			this.context.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
+			this.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
 		} else {
-			function.(func(*Context))(context)
+			function.(func(*BundleContext))(context)
 		}
 	}
 }
