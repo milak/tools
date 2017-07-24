@@ -47,7 +47,7 @@ func (this *framework) loadBundles() {
 		// no bundle directory
 		return
 	}
-	this.context.Logger.Println("INFO Loading bundles...")
+	this.Logger.Println("INFO Loading bundles...")
 	info, err := bundleDirectory.Stat()
 	if !info.IsDir() {
 		this.Logger.Println("WARNING Bundles directory is not a directory")
@@ -74,8 +74,9 @@ func (this *framework) loadBundle(file os.FileInfo) {
 	if err != nil {
 		this.Logger.Println("WARNING Bundle has no Init method", file.Name())
 	} else {
-		bundle := NewPluginBundle(thePlugin, file.Name(), )
-		context := NewBundleContext(bundle, this)
+		context := NewBundleContext(this)
+		bundle := NewPluginBundle(thePlugin, file.Name(), context)
+		context.setBundle(bundle) 
 		this.plugins = append(this.bundles,bundle)
 		function, err := thePlugin.Lookup("Init")
 		if err != nil {
