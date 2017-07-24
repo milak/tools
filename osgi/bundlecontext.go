@@ -16,5 +16,5 @@ func NewBundleContext(aBundle *Bundle, aFramework *framework) *BundleContext {
 	return &result
 }
 func (this *BundleContext) GetProperty(aName string) interface{} {
-	return framework.GetProperty(aName)
+	return this.framework.GetProperty(aName)
 }
