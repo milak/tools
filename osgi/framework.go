@@ -82,7 +82,7 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 		if err != nil {
 			this.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
 		} else {
-			function.(func(*BundleContext))(context)
+			function.(func(BundleContext))(context)
 		}
 	}
 }
