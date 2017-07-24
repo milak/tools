@@ -34,6 +34,7 @@ func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContex
 		result.version = *sym.(*string)
 	} else {
 		result.version = "?.?.?"
+		aContext.GetLogger().Println(err)
 	}
 	sym, err = aPlugin.Lookup("SymbolicName")
 	if err == nil {
