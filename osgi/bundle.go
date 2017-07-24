@@ -49,6 +49,12 @@ func (this *pluginBundle) GetBundleContext() *BundleContext {
 func (this *pluginBundle) GetBundleId() string {
 	return this.id
 }
+func (this *pluginBundle) GetSymbolicName() string {
+	return this.symbolicName
+}
+func (this *pluginBundle) GetVersion() string {
+	return this.version
+}
 func (this *pluginBundle) GetState() int {
 	return this.state
 }
