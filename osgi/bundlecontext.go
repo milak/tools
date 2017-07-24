@@ -16,7 +16,7 @@ type bundleContextImpl struct {
 	logger			*log.Logger
 }
 func NewBundleContext(aFramework *Framework) BundleContext {
-	result := BundleContextImpl{framework : aFramework}
+	result := bundleContextImpl{framework : aFramework}
 	result.Logger = aFramework.Logger
 	return &result
 }
