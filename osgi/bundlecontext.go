@@ -8,6 +8,7 @@ type BundleContext interface {
 	GetLogger() *log.Logger
 	GetBundle() Bundle
 	GetProperty(aName string) interface{}
+	SetProperty(aName string, aValue interface{})
 	RegisterService(aService Service)
 	GetService(aName string) Service
 }
@@ -34,6 +35,9 @@ func (this *bundleContextImpl) GetBundle() Bundle {
 }
 func (this *bundleContextImpl) GetProperty(aName string) interface{} {
 	return this.framework.GetProperty(aName)
+}
+func (this *bundleContextImpl) SetProperty(aName string, aValue interface{}) {
+	return this.framework.SetProperty(aName, aValue)
 }
 func (this *bundleContextImpl) RegisterService(aService Service) {
 	this.framework.RegisterService(aService)
