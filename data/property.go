@@ -23,6 +23,14 @@ func (this *PropertyList) GetProperty(aName string) *Property {
 	}
 	return nil
 }
+func (this *PropertyList) HasProperty(aName string) bool {
+	for _,p := range this.properties {
+		if p.Name == aName {
+			return true
+		}
+	}
+	return false
+}
 func (this *PropertyList) GetProperties() []*Property {
 	return this.properties
 }
