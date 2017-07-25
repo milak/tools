@@ -3,7 +3,7 @@ package osgi
 import (
 	"os"
 	"github.com/milak/tools/data"
-	"github.comgoogle/uuid"
+	"github.com/google/uuid"
 	"log"
 	"plugin"
 )
@@ -27,7 +27,7 @@ func NewFramework(aBundleFolder string, aLogger *log.Logger) *Framework {
 	return result
 }
 func (this *Framework) GetBundleId() string {
-	
+	return this.bundleId
 }
 func (this *Framework) Start(){
 	if this.state == ACTIVE || this.state == STARTING{
