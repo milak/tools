@@ -37,7 +37,7 @@ func (this *bundleContextImpl) GetProperty(aName string) interface{} {
 	return this.framework.GetProperty(aName)
 }
 func (this *bundleContextImpl) SetProperty(aName string, aValue interface{}) {
-	return this.framework.SetProperty(aName, aValue)
+	this.framework.SetProperty(aName, aValue)
 }
 func (this *bundleContextImpl) RegisterService(aService Service) {
 	this.framework.RegisterService(aService)
