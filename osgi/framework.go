@@ -24,11 +24,17 @@ func NewFramework(aBundleFolder string, aLogger *log.Logger) *Framework {
 	return result
 }
 func (this *Framework) Start(){
+	if this.state == ACTIVE || this.state == STARTING{
+		return
+	}
 	this.state = STARTING
 	this.loadBundles()
-	this.state = STARTED
+	this.state = ACTIVE
 }
 func (this *Framework) Stop(){
+	if this.state != ACTIVE {
+		return
+	}
 	this.state = STOPPING
 	for _,service := range this.services {
 		service.Stop()
