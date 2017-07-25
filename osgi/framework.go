@@ -60,7 +60,11 @@ func (this *Framework) GetState() int {
 	return this.state
 }
 func (this *Framework) GetProperty(aName string) interface{} {
-	return this.properties.GetProperty(aName)
+	if !this.properties.HasProperty(aName) {
+		return nil
+	} else {
+		return this.properties.GetProperty(aName).Value
+	}
 }
 func (this *Framework) SetProperty(aName string, aValue interface{}) {
 	this.properties.SetProperty(aName,aValue)
