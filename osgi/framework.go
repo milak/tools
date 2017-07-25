@@ -32,6 +32,9 @@ func (this *Framework) GetBundleId() string {
 func (this *Framework) GetSymbolicName() string {
 	return "framework"
 }
+func (this *Framework) GetVersion() string {
+	return "1.0"
+}
 func (this *Framework) Start(){
 	if this.state == ACTIVE || this.state == STARTING{
 		return
