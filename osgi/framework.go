@@ -12,7 +12,8 @@ type Framework struct {
 	bundleFolder 	string
 	bundles      	[]Bundle
 	Logger     		*log.Logger
-	Properties 		data.PropertyList
+	properties 		data.PropertyList
+	services		map[string]Service
 }
 // Create a NewPluginRegistry with a folder name containing the plugins and an initialized context. 
 // Once created, the registry will load the plugins.
@@ -29,10 +30,10 @@ func (this *Framework) Stop(){
 	}
 }
 func (this *Framework) GetProperty(aName string) interface{} {
-	return this.Properties.GetProperty(aName)
+	return this.properties.GetProperty(aName)
 }
 func (this *Framework) SetProperty(aName string, aValue interface{}) {
-	this.Properties.SetProperty(aName,aValue)
+	this.properties.SetProperty(aName,aValue)
 }
 // Obtain the list of the loaded plugins
 func (this *Framework) GetBundles() []Bundle {
@@ -86,4 +87,10 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 		}
 		this.Logger.Println("INFO Bundle",bundle.GetBundleId(),"-", bundle.GetSymbolicName(), "(",bundle.GetVersion(),") loaded")
 	}
+}
+func (this *Framework) RegisterService(aService Service) {
+	this.services[aService] = aService
+}
+func (this *Framework) GetService(aName string) Service {
+	return this.services[aService]
 }

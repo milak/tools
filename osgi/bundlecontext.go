@@ -7,6 +7,8 @@ import (
 type BundleContext interface {
 	GetLogger() *log.Logger
 	GetProperty(aName string) interface{}
+	RegisterService(aService Service)
+	GetService(aName string) Service
 }
 
 // The OSGI context class
@@ -28,4 +30,10 @@ func (this *bundleContextImpl) setBundle(aBundle Bundle){
 }
 func (this *bundleContextImpl) GetProperty(aName string) interface{} {
 	return this.framework.GetProperty(aName)
+}
+func (this *bundleContextImpl) RegisterService(aService Service) {
+	this.framework.RegisterService(aService)
+}
+func (this *bundleContextImpl) GetService(aName string) Service {
+	return this.framework.GetService(aName)
 }
