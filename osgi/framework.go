@@ -49,7 +49,7 @@ func (this *Framework) Stop(){
 	if this.state != ACTIVE {
 		return
 	}
-	this.Logger.Println("Stopping")
+	this.Logger.Println("Stopping...")
 	this.state = STOPPING
 	for _,service := range this.services {
 		service.Stop()
