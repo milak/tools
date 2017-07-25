@@ -29,6 +29,9 @@ func NewFramework(aBundleFolder string, aLogger *log.Logger) *Framework {
 func (this *Framework) GetBundleId() string {
 	return this.bundleId
 }
+func (this *Framework) GetSymbolicName() string {
+	return "framework"
+}
 func (this *Framework) Start(){
 	if this.state == ACTIVE || this.state == STARTING{
 		return
