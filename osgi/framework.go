@@ -90,6 +90,7 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 	}
 }
 func (this *Framework) RegisterService(aService Service) {
+	this.Logger.Println("INFO Service "+aService.GetName()+" registered")
 	this.services[aService.GetName()] = aService
 }
 func (this *Framework) GetService(aName string) Service {
