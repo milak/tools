@@ -89,7 +89,7 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 	}
 }
 func (this *Framework) RegisterService(aService Service) {
-	this.services[aService] = aService
+	this.services[aService.GetName()] = aService
 }
 func (this *Framework) GetService(aName string) Service {
 	return this.services[aService]
