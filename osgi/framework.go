@@ -96,3 +96,10 @@ func (this *Framework) RegisterService(aService Service) {
 func (this *Framework) GetService(aName string) Service {
 	return this.services[aName]
 }
+func (this *Framework) GetServices() []Service {
+	result := []Service{}
+	for _,v := range this.services {
+		result = append(result,v)
+	}
+	return result
+}
