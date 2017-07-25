@@ -19,6 +19,7 @@ type Framework struct {
 // Once created, the registry will load the plugins.
 func NewFramework(aBundleFolder string, aLogger *log.Logger) *Framework {
 	result := &Framework{bundleFolder: aBundleFolder, Logger : aLogger}
+	result.services = make(map[string]Service)
 	return result
 }
 func (this *Framework) Start(){
