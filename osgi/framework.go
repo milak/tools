@@ -92,5 +92,5 @@ func (this *Framework) RegisterService(aService Service) {
 	this.services[aService.GetName()] = aService
 }
 func (this *Framework) GetService(aName string) Service {
-	return this.services[aService]
+	return this.services[aName]
 }
