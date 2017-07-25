@@ -3,12 +3,14 @@ package osgi
 import (
 	"os"
 	"github.com/milak/tools/data"
+	"github.comgoogle/uuid"
 	"log"
 	"plugin"
 )
 
 // The framework class
 type Framework struct {
+	bundleId		string
 	bundleFolder 	string
 	bundles      	[]Bundle
 	Logger     		*log.Logger
@@ -20,8 +22,12 @@ type Framework struct {
 // Once created, the registry will load the plugins.
 func NewFramework(aBundleFolder string, aLogger *log.Logger) *Framework {
 	result := &Framework{bundleFolder: aBundleFolder, Logger : aLogger}
+	result.bundleId = uuid.New().String()
 	result.services = make(map[string]Service)
 	return result
+}
+func (this *Framework) GetBundleId() string {
+	
 }
 func (this *Framework) Start(){
 	if this.state == ACTIVE || this.state == STARTING{
@@ -44,7 +50,7 @@ func (this *Framework) Stop(){
 	}
 	this.state = RESOLVED
 }
-func (this *Framework) GetState() {
+func (this *Framework) GetState() int {
 	return this.state
 }
 func (this *Framework) GetProperty(aName string) interface{} {
