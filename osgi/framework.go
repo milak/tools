@@ -39,14 +39,17 @@ func (this *Framework) Start(){
 	if this.state == ACTIVE || this.state == STARTING{
 		return
 	}
+	this.Logger.Println("Starting...")
 	this.state = STARTING
 	this.loadBundles()
 	this.state = ACTIVE
+	this.Logger.Println("Active")
 }
 func (this *Framework) Stop(){
 	if this.state != ACTIVE {
 		return
 	}
+	this.Logger.Println("Stopping")
 	this.state = STOPPING
 	for _,service := range this.services {
 		service.Stop()
@@ -55,6 +58,7 @@ func (this *Framework) Stop(){
 		bundle.Stop()
 	}
 	this.state = RESOLVED
+	this.Logger.Println("Resolved")
 }
 func (this *Framework) GetState() int {
 	return this.state
