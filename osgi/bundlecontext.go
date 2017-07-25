@@ -6,6 +6,7 @@ import (
 
 type BundleContext interface {
 	GetLogger() *log.Logger
+	GetBundle() Bundle
 	GetProperty(aName string) interface{}
 	RegisterService(aService Service)
 	GetService(aName string) Service
@@ -27,6 +28,9 @@ func (this *bundleContextImpl) GetLogger() *log.Logger {
 }
 func (this *bundleContextImpl) setBundle(aBundle Bundle){
 	this.bundle = aBundle
+}
+func (this *bundleContextImpl) GetBundle() Bundle {
+	return this.bundle
 }
 func (this *bundleContextImpl) GetProperty(aName string) interface{} {
 	return this.framework.GetProperty(aName)
