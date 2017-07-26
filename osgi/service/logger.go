@@ -4,7 +4,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"fmt"
 )
 const UNKNOWN 	= -1
 const DEBUG 	= 0
