@@ -48,6 +48,7 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	} else {
 		// Filtred
 	}
+	return len(p),nil
 }
 func levelFromName(levelName string) int {
 	if levelName == "DEBUG" {
