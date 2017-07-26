@@ -42,7 +42,7 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	}
 	if level == UNKNOWN {
 		this.out.Write(p)
-	if this.level >= level {
+	} else if this.level >= level {
 		this.out.Write(p[i:])
 	} else {
 		// Filtred
