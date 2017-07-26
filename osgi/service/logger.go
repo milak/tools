@@ -33,8 +33,8 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	levelName := ""
 	i := 0
 	for (i < len(p) && p[i] != ' ') {
-		i++
 		levelName += string(p[i])
+		i++
 	}
 	var level int
 	if i == len(p) {
