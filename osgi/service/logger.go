@@ -37,7 +37,7 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 		i++
 	}
 	var level int
-	if i == len(p) {
+	if i != len(p) {
 		level = levelFromName(levelName)
 	} else {
 		level = UNKNOWN
