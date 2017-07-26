@@ -13,11 +13,11 @@ const ERROR 	= 3
 type ServiceLog struct {
 	log.Logger
 	level 	int
-	out		io.Writer
+	output	io.Writer
 }
 func NewServiceLog(prefix string,flag int, aOutput io.Writer){
 	logger := log.New(os.Stdout, prefix, flag)
-	logger.out = aOutput
+	logger.output = aOutput
 	logger.SetOutput(this)
 }
 func (this *ServiceLog) SetLogLevel(aLogLevel int){
@@ -41,9 +41,9 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 		level = UNKNOWN
 	}
 	if level == UNKNOWN {
-		this.out.Write(p)
+		this.output.Write(p)
 	} else if this.level >= level {
-		this.out.Write(p[i:])
+		this.output.Write(p[i:])
 	} else {
 		// Filtred
 	}
