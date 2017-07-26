@@ -44,11 +44,12 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	}
 	if level == UNKNOWN {
 		this.output.Write(p)
+		this.output.Write([]byte("\n"))
 	} else if this.level <= level {
 		this.output.Write(p)
 		this.output.Write([]byte("\n"))
 	} else {
-		// Filtred
+		// Filtered
 	}
 	return len(p),nil
 }
