@@ -17,7 +17,7 @@ type ServiceLog struct {
 }
 func NewServiceLog(prefix string,flag int, aOutput io.Writer){
 	logger := log.New(os.Stdout, prefix, flag)
-	this.out = aOutput
+	logger.out = aOutput
 	logger.SetOutput(this)
 }
 func (this *ServiceLog) SetLogLevel(aLogLevel int){
