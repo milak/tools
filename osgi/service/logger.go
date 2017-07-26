@@ -42,7 +42,7 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	} else {
 		level = UNKNOWN
 	}
-	fmt.Println("Level detected : " + levelName)
+	fmt.Println("Level detected : " , levelName, " ", level)
 	if level == UNKNOWN {
 		this.output.Write(p)
 	} else if this.level >= level {
