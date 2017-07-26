@@ -15,7 +15,7 @@ type ServiceLog struct {
 	level 	int
 	output	io.Writer
 }
-func NewServiceLog(prefix string,flag int, aOutput io.Writer) ServiceLog {
+func NewServiceLog(prefix string,flag int, aOutput io.Writer) *ServiceLog {
 	logger := log.New(os.Stdout, prefix, flag)
 	service := &ServiceLog{logger : logger, output : aOutput, level : INFO}
 	logger.SetOutput(service)
