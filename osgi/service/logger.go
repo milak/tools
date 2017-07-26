@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"fmt"
 )
 const UNKNOWN 	= -1
 const DEBUG 	= 0
@@ -41,6 +42,7 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	} else {
 		level = UNKNOWN
 	}
+	fmt.Println("Level detected : " + levelName)
 	if level == UNKNOWN {
 		this.output.Write(p)
 	} else if this.level >= level {
