@@ -15,7 +15,7 @@ type ServiceLog struct {
 	level 	int
 	output	io.Writer
 }
-func NewServiceLog(prefix string,flag int, aOutput io.Writer){
+func NewServiceLog(prefix string,flag int, aOutput io.Writer) ServiceLog {
 	logger := log.New(os.Stdout, prefix, flag)
 	service := &ServiceLog{logger : logger, output : aOutput, level : INFO}
 	logger.SetOutput(service)
@@ -24,7 +24,7 @@ func NewServiceLog(prefix string,flag int, aOutput io.Writer){
 func (this *ServiceLog) SetLogLevel(aLogLevel int){
 	this.level = aLogLevel
 }
-func (this *ServiceLog) GetLogLevel(){
+func (this *ServiceLog) GetLogLevel() int{
 	return this.level
 }
 // Implement of writer interface
