@@ -29,7 +29,7 @@ func (this *ServiceLog) GetLogLevel() int{
 	return this.level
 }
 func (this *ServiceLog) Println(v ...interface{}) {
-	this.logger.Println(...v)
+	this.logger.Println(v...)
 }
 // Implement of writer interface
 func (this *ServiceLog) Write(p []byte) (n int, err error) {
