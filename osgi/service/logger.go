@@ -11,14 +11,15 @@ const INFO 		= 1
 const WARNING 	= 2
 const ERROR 	= 3
 type ServiceLog struct {
-	log.Logger
+	logger 	log.Logger
 	level 	int
 	output	io.Writer
 }
 func NewServiceLog(prefix string,flag int, aOutput io.Writer){
 	logger := log.New(os.Stdout, prefix, flag)
-	logger.output = aOutput
-	logger.SetOutput(this)
+	service := &ServiceLog{logger : logger, output : aOutput, level : INFO}
+	logger.SetOutput(service)
+	return service
 }
 func (this *ServiceLog) SetLogLevel(aLogLevel int){
 	this.level = aLogLevel
