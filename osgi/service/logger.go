@@ -11,7 +11,7 @@ const INFO 		= 1
 const WARNING 	= 2
 const ERROR 	= 3
 type ServiceLog struct {
-	logger 	log.Logger
+	logger 	*log.Logger
 	level 	int
 	output	io.Writer
 }
