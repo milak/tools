@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 )
 const UNKNOWN 	= -1
 const DEBUG 	= 0
@@ -32,17 +33,14 @@ func (this *ServiceLog) Println(v ...interface{}) {
 }
 // Implement of writer interface
 func (this *ServiceLog) Write(p []byte) (n int, err error) {
-	levelName := ""
-	i := 0
-	for (i < len(p) && p[i] != ' ') {
-		levelName += string(p[i])
-		i++
-	}
+	logLine := string(p)
+	pos := strings.Index(logLine, "")
 	var level int
-	if i != len(p) {
-		level = levelFromName(levelName)
-	} else {
+	if pos == -1 {
 		level = UNKNOWN
+	} else {
+		levelName := logLine[0:pos]
+		level = levelFromName(levelName)
 	}
 	if level == UNKNOWN {
 		this.output.Write(p)
