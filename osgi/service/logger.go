@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"fmt"
 )
 const UNKNOWN 	= -1
 const DEBUG 	= 0
@@ -41,6 +42,7 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	} else {
 		levelName := logLine[0:pos]
 		level = levelFromName(levelName)
+		fmt.Println("level name : "+ levelName)
 	}
 	if level == UNKNOWN {
 		this.output.Write(p)
