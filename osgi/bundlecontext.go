@@ -42,6 +42,9 @@ func (this *bundleContextImpl) SetProperty(aName string, aValue interface{}) {
 func (this *bundleContextImpl) RegisterService(aName string, aService interface{}) {
 	this.framework.RegisterService(aName,aService)
 }
-func (this *bundleContextImpl) GetService(aName string) Service {
+func (this *bundleContextImpl) GetService(aName string) *ServiceRef {
 	return this.framework.GetService(aName)
+}
+func (this *bundleContextImpl) GetServices() []*ServiceRef {
+	return this.framework.GetServices()
 }

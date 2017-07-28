@@ -15,7 +15,7 @@ type Framework struct {
 	bundles      	[]Bundle
 	Logger     		*log.Logger
 	properties 		data.PropertyList
-	services		map[string]Service
+	services		map[string]*ServiceRef
 	state			int
 }
 // Create a NewPluginRegistry with a folder name containing the plugins and an initialized context. 
@@ -124,14 +124,18 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 	}
 }
 func (this *Framework) RegisterService(aName string, aService interface{}) {
-	this.Logger.Println("INFO Service "+aName+" registered")
-	this.services[aName] = NewService(aName,aService)
+	if this.services[aName] != nil {
+		this.Logger.Println("ERROR Service "+aName+" allready registered")
+	} else {
+		this.Logger.Println("INFO Service "+aName+" registered")
+		this.services[aName] = NewServiceRef(aName,aService)
+	}
 }
-func (this *Framework) GetService(aName string) Service {
+func (this *Framework) GetService(aName string) *ServiceRef {
 	return this.services[aName]
 }
-func (this *Framework) GetServices() []Service {
-	result := []Service{}
+func (this *Framework) GetServices() []*ServiceRef {
+	result := []*ServiceRef{}
 	for _,v := range this.services {
 		result = append(result,v)
 	}

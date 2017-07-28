@@ -1,15 +1,15 @@
 package osgi
 
-type Service interface {
-	GetName() string
-	Get() interface{}
-	Start()
-	Stop()
-}
-type serviceImpl struct {
+type ServiceRef struct {
 	name 	string
 	object 	interface{}
 }
-func NewService(aName string, aObject interface{}) Service {
-	return &serviceImpl{name : aName, object : aObject}
+func (this *ServiceRef) GetName() interface{} {
+	return this.name
+}
+func (this *ServiceRef) Get() interface{} {
+	return this.object
+}
+func NewServiceRef(aName string, aObject interface{}) Service {
+	return &ServiceRef{name : aName, object : aObject}
 }
