@@ -6,27 +6,27 @@ import (
 	"github.com/milak/tools/logutil"
 )
 
-// ServiceLog usable as OSGI service. The logger will use FilterableWriter from tools/logutil package 
-type ServiceLog struct {
+// LogService usable as OSGI service. The logger will use FilterableWriter from tools/logutil package 
+type LogService struct {
 	logger 				*log.Logger
 	filterableWriter	*logutil.FilterableWriter
 }
-// Create a new ServiceLog instance with an output, a prefix, flag and the level. The three first arguments will be used to create the logger, the fourth will be used to filter the log lines.
-func NewServiceLog(aOutput io.Writer, aPrefix string, aFlag int, aLevel int) *ServiceLog {
+// Create a new LogService instance with an output, a prefix, flag and the level. The three first arguments will be used to create the logger, the fourth will be used to filter the log lines.
+func NewServiceLog(aOutput io.Writer, aPrefix string, aFlag int, aLevel int) *LogService {
 	logger := log.New(aOutput, aPrefix, aFlag)
-	service := &ServiceLog{logger : logger}
+	service := &LogService{logger : logger}
 	service.filterableWriter = logutil.NewFilterableWriter(aLevel,aOutput)
 	logger.SetOutput(service.filterableWriter) // change the output of the logger
 	return service
 }
 // Change the log level for filter 
-func (this *ServiceLog) SetLevel(aLogLevel int) {
+func (this *LogService) SetLevel(aLogLevel int) {
 	this.filterableWriter.SetLevel(aLogLevel)
 }
 // Obtain the log level
-func (this *ServiceLog) GetLevel() int {
+func (this *LogService) GetLevel() int {
 	return this.filterableWriter.GetLevel()
 }
-func (this *ServiceLog) GetLogger() *log.Logger {
+func (this *LogService) GetLogger() *log.Logger {
 	return this.logger
 }
