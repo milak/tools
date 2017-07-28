@@ -32,21 +32,23 @@ type pluginBundle struct {
 	logger			*log.Logger
 }
 func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContext) Bundle {
+	result := pluginBundle {id : uuid.New().String(), _plugin : aPlugin, state : RESOLVED}
+	// Getting logger 
 	logServiceRef := aContext.GetService("LogService")
 	if logServiceRef != nil {
 		logService := logServiceRef.Get().(service.LogService)
-		this.logger = logService.GetLogger()
+		result.logger = logService.GetLogger()
 	} else {
-		this.logger = logutil.DefaultLogger
-		this.logger.Println("Using default logger")
+		result.logger = logutil.DefaultLogger
+		result.logger.Println("Using default logger")
 	}
-	result := pluginBundle {id : uuid.New().String(), _plugin : aPlugin, state : RESOLVED}
+	
 	sym, err := aPlugin.Lookup("Version")
 	if err == nil {
 		result.version = *sym.(*string)
 	} else {
 		result.version = "?.?.?"
-		this.logger.Println(err)
+		result.logger.Println(err)
 	}
 	sym, err = aPlugin.Lookup("SymbolicName")
 	if err == nil {
