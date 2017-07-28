@@ -18,7 +18,7 @@ type ServiceLog struct {
 }
 // Create a new ServiceLog instance with an output, a prefix, flag and the level. The three first arguments will be used to create the logger, the fourth will be used to filter the log lines.
 func NewServiceLog(aOutput io.Writer, aPrefix, string, aFlag int, aLevel int) *ServiceLog {
-	logger := log.New(aOutput, aPrefix, aFlags)
+	logger := log.New(aOutput, aPrefix, aFlag)
 	service := &ServiceLog{logger : aLogger, output : aOutput, level : aLevel}
 	logger.SetOutput(service) // change the output of the logger
 	return service
