@@ -34,7 +34,7 @@ func (this *ServiceLog) GetLogger() *log.Logger {
 // Implement of writer interface
 func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	logLine := string(p)
-	pos := strings.Index(logLine, "")
+	pos := strings.Index(logLine, " ")
 	var level int
 	if pos == -1 {
 		level = UNKNOWN
@@ -44,10 +44,8 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	}
 	if level == UNKNOWN {
 		this.output.Write(p)
-		this.output.Write([]byte("\n"))
 	} else if this.level <= level {
 		this.output.Write(p)
-		this.output.Write([]byte("\n"))
 	} else {
 		// Filtered
 	}
