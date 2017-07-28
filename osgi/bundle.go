@@ -33,7 +33,7 @@ type pluginBundle struct {
 }
 func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContext) Bundle {
 	logServiceRef := aContext.GetService("LogService")
-	if logService != nil {
+	if logServiceRef != nil {
 		logService := logServiceRef.Get().(service.LogService)
 		this.logger := logService.GetLogger()
 	} else {
