@@ -80,13 +80,13 @@ func (this *pluginBundle) Start() {
 	this.state = STARTING
 	defer func() {
 		if r := recover(); r != nil {
-			this.logger.Println("WARNING Failed to Start bundle", file.Name(), ":", r)
+			this.logger.Println("WARNING Failed to Start bundle", this.symbolicName, ":", r)
 			this.state = INSTALLED
 		}
 	}()
 	function, err := thePlugin.Lookup("Start")
 	if err != nil {
-		this.logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
+		this.logger.Println("WARNING Unable to initialize plugin", this.symbolicName, ":", err)
 	} else {
 		function.(func(BundleContext))(context)
 	}
@@ -99,13 +99,13 @@ func (this *pluginBundle) Stop() {
 	this.state = STOPPING
 	defer func() {
 		if r := recover(); r != nil {
-			this.logger.Println("WARNING Failed to Stop bundle", file.Name(), ":", r)
+			this.logger.Println("WARNING Failed to Stop bundle", this.symbolicName, ":", r)
 			this.state = INSTALLED
 		}
 	}()
 	function, err := thePlugin.Lookup("Stop")
 	if err != nil {
-		this.logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
+		this.logger.Println("WARNING Unable to initialize plugin", this.symbolicName, ":", err)
 	} else {
 		function.(func(BundleContext))(context)
 	}
