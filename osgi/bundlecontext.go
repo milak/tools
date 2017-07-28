@@ -9,7 +9,7 @@ type BundleContext interface {
 	GetBundle() Bundle
 	GetProperty(aName string) interface{}
 	SetProperty(aName string, aValue interface{})
-	RegisterService(aName string, aService Service)
+	RegisterService(aName string, aService interface{})
 	GetService(aName string) Service
 }
 
