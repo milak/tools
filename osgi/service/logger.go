@@ -17,7 +17,7 @@ func NewServiceLog(aOutput io.Writer, aPrefix string, aFlag int, aLevel int) *Se
 	logger := log.New(aOutput, aPrefix, aFlag)
 	service := &ServiceLog{logger : logger, output : aOutput}
 	service.filterableWriter.SetLevel(aLevel)
-	logger.SetOutput(this.filterableWriter) // change the output of the logger
+	logger.SetOutput(service.filterableWriter) // change the output of the logger
 	return service
 }
 // Change the log level for filter 
