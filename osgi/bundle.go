@@ -28,7 +28,7 @@ type pluginBundle struct {
 	symbolicName 	string
 	_plugin 		*plugin.Plugin
 	state 			int
-	bundleContext	*BundleContext
+	bundleContext	BundleContext
 	logger			*log.Logger
 }
 func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContext) Bundle {
