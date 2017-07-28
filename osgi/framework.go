@@ -23,7 +23,7 @@ type Framework struct {
 func NewFramework(aBundleFolder string, aLogger *log.Logger) *Framework {
 	result := &Framework{bundleFolder: aBundleFolder, Logger : aLogger}
 	result.bundleId = uuid.New().String()
-	result.services = make(map[string]Service)
+	result.services = make(map[string]*ServiceRef)
 	return result
 }
 func (this *Framework) GetBundleId() string {
@@ -51,9 +51,6 @@ func (this *Framework) Stop(){
 	}
 	this.Logger.Println("Stopping...")
 	this.state = STOPPING
-	for _,service := range this.services {
-		service.Stop()
-	}
 	for _,bundle := range this.bundles {
 		bundle.Stop()
 	}
