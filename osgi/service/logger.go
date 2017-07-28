@@ -15,7 +15,7 @@ type ServiceLog struct {
 func NewServiceLog(aOutput io.Writer, aPrefix string, aFlag int, aLevel int) *ServiceLog {
 	logger := log.New(aOutput, aPrefix, aFlag)
 	service := &ServiceLog{logger : logger}
-	service.filterableWriter = logutil.FilterableWriter(aLevel,aOutput)
+	service.filterableWriter = logutil.NewFilterableWriter(aLevel,aOutput)
 	logger.SetOutput(service.filterableWriter) // change the output of the logger
 	return service
 }
