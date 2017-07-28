@@ -3,7 +3,6 @@ package service
 import (
 	"io"
 	"log"
-	"os"
 	"strings"
 )
 const UNKNOWN 	= -1
@@ -24,9 +23,11 @@ func NewServiceLog(aOutput io.Writer, aPrefix, string, aFlags int, aLevel int) *
 	logger.SetOutput(service) // change the output of the logger
 	return service
 }
+// Change the log level for filter 
 func (this *ServiceLog) SetLogLevel(aLogLevel int) {
 	this.level = aLogLevel
 }
+// Obtain the log level
 func (this *ServiceLog) GetLogLevel() int {
 	return this.level
 }
