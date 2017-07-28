@@ -17,7 +17,7 @@ type FilterableWriter struct {
 func NewFilterableWriter(aLevel int, aOutput io.Writer) *FilterableWriter{
 	return &FilterableWriter{level : aLevel, output : aOutput}
 }
-func (this *FilterableWriter) GetLevel() {
+func (this *FilterableWriter) GetLevel() int {
 	return this.level
 }
 func (this *FilterableWriter) SetLevel(aLevel int) {
