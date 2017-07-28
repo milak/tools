@@ -10,6 +10,6 @@ func (this *ServiceRef) GetName() interface{} {
 func (this *ServiceRef) Get() interface{} {
 	return this.object
 }
-func NewServiceRef(aName string, aObject interface{}) Service {
+func NewServiceRef(aName string, aObject interface{}) *ServiceRef {
 	return &ServiceRef{name : aName, object : aObject}
 }
