@@ -10,6 +10,6 @@ type serviceImpl struct {
 	name 	string
 	object 	interface{}
 }
-func NewService(aName string, aObject interface{}) *Service {
+func NewService(aName string, aObject interface{}) Service {
 	return &serviceImpl{name : aName, object : aObject}
 }
