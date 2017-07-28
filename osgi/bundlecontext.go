@@ -10,7 +10,8 @@ type BundleContext interface {
 	GetProperty(aName string) interface{}
 	SetProperty(aName string, aValue interface{})
 	RegisterService(aName string, aService interface{})
-	GetService(aName string) Service
+	GetService(aName string) *ServiceRef
+	GetServices() []*ServiceRef
 }
 
 // The OSGI context class
