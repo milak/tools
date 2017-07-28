@@ -4,7 +4,6 @@ import (
 	"io"
 	"log"
 	"github.com/milak/tools/logutil"
-	"strings"
 )
 
 // ServiceLog usable as OSGI service. The logger will use FilterableWriter from tools/logutil package 

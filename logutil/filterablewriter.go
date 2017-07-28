@@ -2,6 +2,7 @@ package logutil
 
 import (
 	"io"
+	"strings"
 )
 const UNKNOWN 	= -1
 const DEBUG 	= 0
