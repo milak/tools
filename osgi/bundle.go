@@ -31,7 +31,7 @@ type pluginBundle struct {
 	bundleContext	*BundleContext
 	logger			*log.Logger
 }
-func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext *BundleContext) Bundle {
+func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContext) Bundle {
 	result := pluginBundle {id : uuid.New().String(), _plugin : aPlugin, state : RESOLVED}
 	// Getting logger 
 	logServiceRef := aContext.GetService("LogService")
@@ -88,7 +88,7 @@ func (this *pluginBundle) Start() {
 	if err != nil {
 		this.logger.Println("WARNING Unable to initialize plugin", this.symbolicName, ":", err)
 	} else {
-		function.(func(*BundleContext))(this.bundleContext)
+		function.(func(BundleContext))(this.bundleContext)
 	}
 	this.state = ACTIVE
 }
@@ -107,7 +107,7 @@ func (this *pluginBundle) Stop() {
 	if err != nil {
 		this.logger.Println("WARNING Unable to initialize plugin", this.symbolicName, ":", err)
 	} else {
-		function.(func(*BundleContext))(this.bundleContext)
+		function.(func(BundleContext))(this.bundleContext)
 	}
 	this.state = RESOLVED
 }
