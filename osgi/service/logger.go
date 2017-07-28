@@ -28,7 +28,7 @@ func (this *ServiceLog) SetLogLevel(aLogLevel int) {
 func (this *ServiceLog) GetLogLevel() int {
 	return this.level
 }
-func (this *ServiceLog) GetLogger() log.Logger {
+func (this *ServiceLog) GetLogger() *log.Logger {
 	return this.logger
 }
 // Implement of writer interface
