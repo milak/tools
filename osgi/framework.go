@@ -87,7 +87,7 @@ func (this *Framework) GetBundles() []Bundle {
 	return this.bundles
 }
 func (this *Framework) GetBundleContext() BundleContext {
-	return &bundleContextImpl{bundle : this, framework : this, logger : this.logger}
+	return &bundleContextImpl{bundle : this, framework : this}
 }
 // Load the plugins in the plugin folder
 func (this *Framework) loadBundles() {
