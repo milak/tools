@@ -35,7 +35,7 @@ func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContex
 	logServiceRef := aContext.GetService("LogService")
 	if logServiceRef != nil {
 		logService := logServiceRef.Get().(service.LogService)
-		this.logger := logService.GetLogger()
+		this.logger = logService.GetLogger()
 	} else {
 		this.logger = logutil.DefaultLogger
 		this.logger.Println("Using default logger")
