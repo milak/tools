@@ -9,7 +9,7 @@ type BundleContext interface {
 	GetBundle() Bundle
 	GetProperty(aName string) interface{}
 	SetProperty(aName string, aValue interface{})
-	RegisterService(aService Service)
+	RegisterService(aName string, aService Service)
 	GetService(aName string) Service
 }
 
@@ -40,7 +40,7 @@ func (this *bundleContextImpl) SetProperty(aName string, aValue interface{}) {
 	this.framework.SetProperty(aName, aValue)
 }
 func (this *bundleContextImpl) RegisterService(aName string, aService interface{}) {
-	this.framework.RegisterService(aService)
+	this.framework.RegisterService(aName,aService)
 }
 func (this *bundleContextImpl) GetService(aName string) Service {
 	return this.framework.GetService(aName)
