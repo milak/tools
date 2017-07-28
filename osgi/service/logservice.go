@@ -4,12 +4,16 @@ import (
 	"io"
 	"log"
 	"github.com/milak/tools/logutil"
+	"os"
 )
 
 // LogService usable as OSGI service. The logger will use FilterableWriter from tools/logutil package 
 type LogService struct {
 	logger 				*log.Logger
 	filterableWriter	*logutil.FilterableWriter
+}
+func NewDefaultServiceLog() *LogService {
+	return NewServiceLog(os.Stdout, "",  log.Ldate | log.Ltime | log.Lshortfile, logutil.INFO)
 }
 // Create a new LogService instance with an output, a prefix, flag and the level. The three first arguments will be used to create the logger, the fourth will be used to filter the log lines.
 func NewServiceLog(aOutput io.Writer, aPrefix string, aFlag int, aLevel int) *LogService {
