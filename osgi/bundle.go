@@ -1,8 +1,11 @@
 package osgi
 
 import (
+	"log"
 	"plugin"
 	"github.com/google/uuid"
+	"github.com/milak/tools/osgi/service"
+	"github.com/milak/tools/logutil"
 )
 const UNINSTALLED = 1
 const INSTALLED   = 2
@@ -26,15 +29,24 @@ type pluginBundle struct {
 	_plugin 		*plugin.Plugin
 	state 			int
 	bundleContext	BundleContext
+	logger			*log.Logger
 }
 func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContext) Bundle {
+	logServiceRef := aContext.GetService("LogService")
+	if logService != nil {
+		logService := logServiceRef.Get().(service.LogService)
+		this.logger := logService.GetLogger()
+	} else {
+		this.logger = logutil.DefaultLogger
+		this.logger.Println("Using default logger")
+	}
 	result := pluginBundle {id : uuid.New().String(), _plugin : aPlugin, state : RESOLVED}
 	sym, err := aPlugin.Lookup("Version")
 	if err == nil {
 		result.version = *sym.(*string)
 	} else {
 		result.version = "?.?.?"
-		aContext.GetLogger().Println(err)
+		this.logger.Println(err)
 	}
 	sym, err = aPlugin.Lookup("SymbolicName")
 	if err == nil {
@@ -66,13 +78,13 @@ func (this *pluginBundle) Start() {
 	this.state = STARTING
 	defer func() {
 		if r := recover(); r != nil {
-			this.Logger.Println("WARNING Failed to Start bundle", file.Name(), ":", r)
+			this.logger.Println("WARNING Failed to Start bundle", file.Name(), ":", r)
 			this.state = INSTALLED
 		}
 	}()
 	function, err := thePlugin.Lookup("Start")
 	if err != nil {
-		this.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
+		this.logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
 	} else {
 		function.(func(BundleContext))(context)
 	}
@@ -85,13 +97,13 @@ func (this *pluginBundle) Stop() {
 	this.state = STOPPING
 	defer func() {
 		if r := recover(); r != nil {
-			this.Logger.Println("WARNING Failed to Stop bundle", file.Name(), ":", r)
+			this.logger.Println("WARNING Failed to Stop bundle", file.Name(), ":", r)
 			this.state = INSTALLED
 		}
 	}()
 	function, err := thePlugin.Lookup("Stop")
 	if err != nil {
-		this.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
+		this.logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
 	} else {
 		function.(func(BundleContext))(context)
 	}
