@@ -5,4 +5,4 @@ import (
 	"os"
 )
 
-var DefaultLogger := log.New(os.Stderr, "", log.LstdFlags)
+var DefaultLogger = log.New(os.Stderr, "", log.LstdFlags)
