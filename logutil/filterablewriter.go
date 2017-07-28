@@ -24,7 +24,7 @@ func (this *FilterableWriter) SetLevel(aLevel int) {
 	this.level = aLevel
 }
 // Implement of writer interface
-func (this FilterableWriter) Write(p []byte) (n int, err error) {
+func (this *FilterableWriter) Write(p []byte) (n int, err error) {
 	// TODO perfomance leaks change implementation or use thread to avoid slowing the process 
 	logLine := string(p)
 	var level int
