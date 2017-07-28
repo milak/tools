@@ -10,13 +10,12 @@ import (
 type ServiceLog struct {
 	logger 				*log.Logger
 	filterableWriter	*logutil.FilterableWriter
-	output				io.Writer
 }
 // Create a new ServiceLog instance with an output, a prefix, flag and the level. The three first arguments will be used to create the logger, the fourth will be used to filter the log lines.
 func NewServiceLog(aOutput io.Writer, aPrefix string, aFlag int, aLevel int) *ServiceLog {
 	logger := log.New(aOutput, aPrefix, aFlag)
-	service := &ServiceLog{logger : logger, output : aOutput}
-	service.filterableWriter.SetLevel(aLevel)
+	service := &ServiceLog{logger : logger}
+	service.filterableWriter = logutil.FilterableWriter(aLevel,aOutput)
 	logger.SetOutput(service.filterableWriter) // change the output of the logger
 	return service
 }
