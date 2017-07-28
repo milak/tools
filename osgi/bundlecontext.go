@@ -1,9 +1,5 @@
 package osgi
 
-import (
-	"log"
-)
-
 type BundleContext interface {
 	GetBundle() Bundle
 	GetProperty(aName string) interface{}
