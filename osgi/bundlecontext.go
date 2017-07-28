@@ -5,7 +5,6 @@ import (
 )
 
 type BundleContext interface {
-	GetLogger() *log.Logger
 	GetBundle() Bundle
 	GetProperty(aName string) interface{}
 	SetProperty(aName string, aValue interface{})
@@ -18,15 +17,10 @@ type BundleContext interface {
 type bundleContextImpl struct {
 	bundle 			Bundle
 	framework 		*Framework
-	logger			*log.Logger
 }
 func NewBundleContext(aFramework *Framework) BundleContext {
 	result := bundleContextImpl{framework : aFramework}
-	result.logger = aFramework.Logger
 	return &result
-}
-func (this *bundleContextImpl) GetLogger() *log.Logger {
-	return this.logger
 }
 func (this *bundleContextImpl) setBundle(aBundle Bundle){
 	this.bundle = aBundle
