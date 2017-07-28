@@ -88,7 +88,7 @@ func (this *pluginBundle) Start() {
 	if err != nil {
 		this.logger.Println("WARNING Unable to initialize plugin", this.symbolicName, ":", err)
 	} else {
-		function.(func(BundleContext))(context)
+		function.(func(BundleContext))(this.bundleContext)
 	}
 	this.state = ACTIVE
 }
@@ -107,7 +107,7 @@ func (this *pluginBundle) Stop() {
 	if err != nil {
 		this.logger.Println("WARNING Unable to initialize plugin", this.symbolicName, ":", err)
 	} else {
-		function.(func(BundleContext))(context)
+		function.(func(BundleContext))(this.bundleContext)
 	}
 	this.state = RESOLVED
 }
