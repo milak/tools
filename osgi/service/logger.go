@@ -34,6 +34,7 @@ func (this *ServiceLog) GetLogger() *log.Logger {
 // Implement of writer interface
 func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	logLine := string(p)
+	var level int
 	if strings.Contains(logLine, "DEBUG ") {
 		level = DEBUG
 	} else if strings.Contains(logLine, "INFO ") {
