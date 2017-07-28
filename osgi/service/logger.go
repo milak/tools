@@ -22,14 +22,14 @@ func NewServiceLog(prefix string,flag int, aOutput io.Writer) *ServiceLog {
 	logger.SetOutput(service)
 	return service
 }
-func (this *ServiceLog) SetLogLevel(aLogLevel int){
+func (this *ServiceLog) SetLogLevel(aLogLevel int) {
 	this.level = aLogLevel
 }
-func (this *ServiceLog) GetLogLevel() int{
+func (this *ServiceLog) GetLogLevel() int {
 	return this.level
 }
-func (this *ServiceLog) Println(v ...interface{}) {
-	this.logger.Println(v...)
+func (this *ServiceLog) GetLogger() log.Logger {
+	return this.logger
 }
 // Implement of writer interface
 func (this *ServiceLog) Write(p []byte) (n int, err error) {

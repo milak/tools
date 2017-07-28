@@ -60,10 +60,22 @@ func (this *pluginBundle) GetState() int {
 	return this.state
 }
 func (this *pluginBundle) Start() {
-	if this.state == ACTIVE || this.state == STARTING{
+	if this.state != INSTALLED {
 		return
 	}
 	this.state = STARTING
+	defer func() {
+		if r := recover(); r != nil {
+			this.Logger.Println("WARNING Failed to Start bundle", file.Name(), ":", r)
+			this.state = INSTALLED
+		}
+	}()
+	function, err := thePlugin.Lookup("Start")
+	if err != nil {
+		this.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
+	} else {
+		function.(func(BundleContext))(context)
+	}
 	this.state = ACTIVE
 }
 func (this *pluginBundle) Stop() {
@@ -71,5 +83,17 @@ func (this *pluginBundle) Stop() {
 		return
 	}
 	this.state = STOPPING
+	defer func() {
+		if r := recover(); r != nil {
+			this.Logger.Println("WARNING Failed to Stop bundle", file.Name(), ":", r)
+			this.state = INSTALLED
+		}
+	}()
+	function, err := thePlugin.Lookup("Stop")
+	if err != nil {
+		this.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
+	} else {
+		function.(func(BundleContext))(context)
+	}
 	this.state = RESOLVED
 }

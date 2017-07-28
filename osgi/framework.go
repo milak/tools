@@ -120,18 +120,12 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 		bundle := NewPluginBundle(thePlugin, file.Name(), context)
 		context.(*bundleContextImpl).setBundle(bundle)
 		this.bundles = append(this.bundles,bundle)
-		function, err := thePlugin.Lookup("Init")
-		if err != nil {
-			this.Logger.Println("WARNING Unable to initialize plugin", file.Name(), ":", err)
-		} else {
-			function.(func(BundleContext))(context)
-		}
 		this.Logger.Println("INFO Bundle",bundle.GetBundleId(),"-", bundle.GetSymbolicName(), "(",bundle.GetVersion(),") loaded")
 	}
 }
-func (this *Framework) RegisterService(aService Service) {
-	this.Logger.Println("INFO Service "+aService.GetName()+" registered")
-	this.services[aService.GetName()] = aService
+func (this *Framework) RegisterService(aName string, aService interface{}) {
+	this.Logger.Println("INFO Service "+aName+" registered")
+	this.services[aName] = NewService(aName,aService)
 }
 func (this *Framework) GetService(aName string) Service {
 	return this.services[aName]
