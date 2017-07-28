@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"fmt"
 )
 const UNKNOWN 	= -1
 const DEBUG 	= 0
@@ -35,14 +34,16 @@ func (this *ServiceLog) GetLogger() *log.Logger {
 // Implement of writer interface
 func (this *ServiceLog) Write(p []byte) (n int, err error) {
 	logLine := string(p)
-	pos := strings.Index(logLine, " ")
-	var level int
-	if pos == -1 {
-		level = UNKNOWN
+	if strings.Contains(logLine, "DEBUG ") {
+		level = DEBUG
+	} else if strings.Contains(logLine, "INFO ") {
+		level = INFO
+	} else if strings.Contains(logLine, "WARNING ") {
+		level = WARNING
+	} else if strings.Contains(logLine, "ERROR ") {
+		level = ERROR
 	} else {
-		levelName := logLine[0:pos]
-		level = levelFromName(levelName)
-		fmt.Println("level name : "+ levelName)
+		level = UNKNOWN
 	}
 	if level == UNKNOWN {
 		this.output.Write(p)
@@ -52,17 +53,4 @@ func (this *ServiceLog) Write(p []byte) (n int, err error) {
 		// Filtered
 	}
 	return len(p),nil
-}
-func levelFromName(levelName string) int {
-	if levelName == "DEBUG" {
-		return DEBUG
-	} else if levelName == "INFO" {
-		return INFO
-	} else if levelName == "WARNING" {
-		return WARNING
-	} else if levelName == "ERROR" {
-		return ERROR
-	} else {
-		return UNKNOWN
-	}
 }
