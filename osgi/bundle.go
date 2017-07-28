@@ -42,7 +42,7 @@ func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContex
 		result.logger = logutil.DefaultLogger
 		result.logger.Println("Using default logger")
 	}
-	
+	// Getting informations in plugin
 	sym, err := aPlugin.Lookup("Version")
 	if err == nil {
 		result.version = *sym.(*string)
@@ -84,7 +84,7 @@ func (this *pluginBundle) Start() {
 			this.state = INSTALLED
 		}
 	}()
-	function, err := thePlugin.Lookup("Start")
+	function, err := this._plugin.Lookup("Start")
 	if err != nil {
 		this.logger.Println("WARNING Unable to initialize plugin", this.symbolicName, ":", err)
 	} else {
@@ -103,7 +103,7 @@ func (this *pluginBundle) Stop() {
 			this.state = INSTALLED
 		}
 	}()
-	function, err := thePlugin.Lookup("Stop")
+	function, err := this._plugin.Lookup("Stop")
 	if err != nil {
 		this.logger.Println("WARNING Unable to initialize plugin", this.symbolicName, ":", err)
 	} else {
