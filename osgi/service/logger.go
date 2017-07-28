@@ -11,15 +11,17 @@ const DEBUG 	= 0
 const INFO 		= 1
 const WARNING 	= 2
 const ERROR 	= 3
+// ServiceLog usable as OSGI service. The main feature is the ability to filter logs with a level. For filtering purpose, add in the message one of the key word : DEBUG, INFO, WARNING or ERROR separated by a space (' '). If none of the keyword is used, the line will not be filtered.
 type ServiceLog struct {
 	logger 	*log.Logger
 	level 	int
 	output	io.Writer
 }
-func NewServiceLog(prefix string,flag int, aOutput io.Writer) *ServiceLog {
-	logger := log.New(os.Stdout, prefix, flag)
-	service := &ServiceLog{logger : logger, output : aOutput, level : INFO}
-	logger.SetOutput(service)
+// Create a new ServiceLog instance with an output, a prefix, flags and the level. The three first arguments will be used to create the logger, the fourth will be used to filter the log lines.
+func NewServiceLog(aOutput io.Writer, aPrefix, string, aFlags int, aLevel int) *ServiceLog {
+	logger := log.New(aOutput, aPrefix, aFlags)
+	service := &ServiceLog{logger : aLogger, output : aOutput, level : aLevel}
+	logger.SetOutput(service) // change the output of the logger
 	return service
 }
 func (this *ServiceLog) SetLogLevel(aLogLevel int) {
@@ -33,6 +35,7 @@ func (this *ServiceLog) GetLogger() *log.Logger {
 }
 // Implement of writer interface
 func (this *ServiceLog) Write(p []byte) (n int, err error) {
+	// TODO perfomance leaks change implementation or use thread to avoid slowing the process 
 	logLine := string(p)
 	var level int
 	if strings.Contains(logLine, "DEBUG ") {
