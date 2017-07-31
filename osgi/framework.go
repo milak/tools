@@ -43,7 +43,7 @@ func (this *Framework) Start(){
 	// Looking for LogService
 	logServiceRef := this.GetService("LogService")
 	if logServiceRef == nil {
-		logService := service.NewDefaultServiceLog()
+		logService := service.NewDefaultLogService()
 		this.RegisterService("LogService", &logService)
 		this.logger = logService.GetLogger()
 	} else {
