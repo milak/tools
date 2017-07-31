@@ -57,7 +57,7 @@ func (this *Framework) _getLogger() {
 	if logServiceRef == nil {
 		logService := service.NewDefaultLogService()
 		this.logger = logService.GetLogger()
-		this.RegisterService("LogService", logService)
+		//this.RegisterService("LogService", logService)
 	} else {
 		logService := logServiceRef.Get().(*service.LogService)
 		this.logger = logService.GetLogger()
