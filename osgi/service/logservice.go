@@ -12,11 +12,11 @@ type LogService struct {
 	logger 				*log.Logger
 	filterableWriter	*logutil.FilterableWriter
 }
-func NewDefaultServiceLog() *LogService {
+func NewDefaultLogService() *LogService {
 	return NewServiceLog(os.Stdout, "",  log.Ldate | log.Ltime | log.Lshortfile, logutil.INFO)
 }
 // Create a new LogService instance with an output, a prefix, flag and the level. The three first arguments will be used to create the logger, the fourth will be used to filter the log lines.
-func NewServiceLog(aOutput io.Writer, aPrefix string, aFlag int, aLevel int) *LogService {
+func NewLogService(aOutput io.Writer, aPrefix string, aFlag int, aLevel int) *LogService {
 	logger := log.New(aOutput, aPrefix, aFlag)
 	service := &LogService{logger : logger}
 	service.filterableWriter = logutil.NewFilterableWriter(aLevel,aOutput)
