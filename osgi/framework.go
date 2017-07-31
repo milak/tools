@@ -40,6 +40,18 @@ func (this *Framework) Start(){
 	if this.state == ACTIVE || this.state == STARTING{
 		return
 	}
+	this._getLogger()
+	// Starting
+	this.logger.Println("INFO Starting...")
+	this.state = STARTING
+	this.loadBundles()
+	this.state = ACTIVE
+	this.logger.Println("INFO Active")
+}
+func (this *Framework) _getLogger() {
+	if this.logger != nil {
+		return
+	}
 	// Looking for LogService
 	logServiceRef := this.GetService("LogService")
 	if logServiceRef == nil {
@@ -50,12 +62,6 @@ func (this *Framework) Start(){
 		logService := logServiceRef.Get().(*service.LogService)
 		this.logger = logService.GetLogger()
 	}
-	// Starting
-	this.logger.Println("INFO Starting...")
-	this.state = STARTING
-	this.loadBundles()
-	this.state = ACTIVE
-	this.logger.Println("INFO Active")
 }
 func (this *Framework) Stop(){
 	if this.state != ACTIVE {
@@ -133,11 +139,17 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 	}
 }
 func (this *Framework) RegisterService(aName string, aService interface{}) {
+	this._getLogger()
 	if this.services[aName] != nil {
 		this.logger.Println("ERROR Service "+aName+" allready registered")
 	} else {
-		this.logger.Println("INFO Service "+aName+" registered")
 		this.services[aName] = NewServiceRef(aName,aService)
+		this.logger.Println("INFO Service "+aName+" registered")
+	}
+	// Take account the new LogService
+	if aName == "LogService" {
+		this.logger = nil
+		this._getLogger() 
 	}
 }
 func (this *Framework) GetService(aName string) *ServiceRef {
