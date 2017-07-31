@@ -40,7 +40,7 @@ func (this *Framework) Start() {
 	if this.state == ACTIVE || this.state == STARTING{
 		return
 	}
-	this.getLogger()
+	this._getLogger()
 	// Starting
 	this.logger.Println("INFO Starting...")
 	this.state = STARTING
@@ -48,7 +48,7 @@ func (this *Framework) Start() {
 	this.state = ACTIVE
 	this.logger.Println("INFO Active")
 }
-func (this *Framework) getLogger() {
+func (this *Framework) _getLogger() {
 	if this.logger != nil {
 		return
 	}
