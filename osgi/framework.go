@@ -36,11 +36,11 @@ func (this *Framework) GetSymbolicName() string {
 func (this *Framework) GetVersion() string {
 	return "1.0"
 }
-func (this *Framework) Start(){
+func (this *Framework) Start() {
 	if this.state == ACTIVE || this.state == STARTING{
 		return
 	}
-	this._getLogger()
+	this.getLogger()
 	// Starting
 	this.logger.Println("INFO Starting...")
 	this.state = STARTING
@@ -48,7 +48,7 @@ func (this *Framework) Start(){
 	this.state = ACTIVE
 	this.logger.Println("INFO Active")
 }
-func (this *Framework) _getLogger() {
+func (this *Framework) getLogger() {
 	if this.logger != nil {
 		return
 	}
