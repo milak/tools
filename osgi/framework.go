@@ -132,7 +132,7 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 	this.logger.Println("DEBUG Loading bundle", file.Name(), "...")
 	thePlugin, err := plugin.Open("plugins/" + file.Name())
 	if err != nil {
-		this.logger.Println("WARNING Bundle has no Init method", file.Name())
+		this.logger.Println("WARNING Unable to load plugin", file.Name())
 	} else {
 		context := NewBundleContext(this)
 		bundle := NewPluginBundle(thePlugin, file.Name(), context)
