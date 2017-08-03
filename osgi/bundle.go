@@ -143,7 +143,7 @@ func (this *pluginBundle) Stop() {
 	}
 	this.state = RESOLVED
 }
-func GetLoggerFromContext(aContext BundleContext) *Logger {
+func GetLoggerFromContext(aContext BundleContext) *log.Logger {
 	var logger *log.Logger
 	// Getting logger 
 	logServiceRef := aContext.GetService("LogService")
