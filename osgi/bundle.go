@@ -148,7 +148,7 @@ func GetLoggerFromContext(aContext BundleContext) *log.Logger {
 	// Getting logger 
 	logServiceRef := aContext.GetService("LogService")
 	if logServiceRef != nil {
-		logService := logServiceRef.Get().(service.LogService)
+		logService := logServiceRef.Get().(*service.LogService)
 		logger = logService.GetLogger()
 	} else {
 		logger = logutil.DefaultLogger
