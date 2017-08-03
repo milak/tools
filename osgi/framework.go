@@ -145,7 +145,7 @@ func (this *Framework) RegisterBundle(aBundleActivator BundleActivator) {
 	context := NewBundleContext(this)
 	bundle := NewActivatorBundle(aBundleActivator,context)
 	this.bundles = append(this.bundles, bundle)
-	context.(aBundle).setBundle(bundle)
+	context.(*bundleContextImpl).setBundle(bundle)
 	if this.state == ACTIVE {
 		bundle.Start()
 	}
