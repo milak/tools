@@ -27,23 +27,24 @@ type activatorBundle struct {
 	activator 		BundleActivator
 	state 			int
 	bundleContext	BundleContext
+	logger			*log.Logger
 }
 func NewActivatorBundle(aBundleActivator BundleActivator, aBundleContext BundleContext) Bundle {
 	return &activatorBundle{id : uuid.New().String(), activator : aBundleActivator, bundleContext : aBundleContext, logger : GetLoggerFromContext(aBundleContext)}
 }
-func (this *activatorBundle) GetBundleId(){
+func (this *activatorBundle) GetBundleId() string {
 	return this.id
 }
-func (this *activatorBundle) GetBundleContext(){
+func (this *activatorBundle) GetBundleContext() BundleContext {
 	return this.bundleContext
 }
-func (this *activatorBundle) GetSymbolicName(){
+func (this *activatorBundle) GetSymbolicName() string {
 	return this.activator.GetSymbolicName()
 }
-func (this *activatorBundle) GetVersion(){
+func (this *activatorBundle) GetVersion() string {
 	return this.activator.GetVersion()
 }
-func (this *activatorBundle) GetState(){
+func (this *activatorBundle) GetState() int {
 	return this.state
 }
 func (this *activatorBundle) Start(){
