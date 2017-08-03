@@ -15,12 +15,52 @@ const STOPPING    = 5
 const ACTIVE      = 6
 
 type Bundle interface {
-	GetBundleId() string
-	GetState() int
-	GetSymbolicName() string
-	GetVersion() string
+	GetBundleId() 		string
+	GetState() 			int
+	GetSymbolicName() 	string
+	GetVersion() 		string
 	Start()
 	Stop()
+}
+type activatorBundle struct {
+	id 				string
+	activator 		BundleActivator
+	state 			int
+	bundleContext	BundleContext
+}
+func NewActivatorBundle(aBundleActivator BundleActivator, aBundleContext BundleContext) Bundle {
+	return &activatorBundle{id : uuid.New().String(), activator : aBundleActivator, bundleContext : aBundleContext, logger : GetLoggerFromContext(aBundleContext)}
+}
+func (this *activatorBundle) GetBundleId(){
+	return this.id
+}
+func (this *activatorBundle) GetBundleContext(){
+	return this.bundleContext
+}
+func (this *activatorBundle) GetSymbolicName(){
+	return this.activator.GetSymbolicName()
+}
+func (this *activatorBundle) GetVersion(){
+	return this.activator.GetVersion()
+}
+func (this *activatorBundle) GetState(){
+	return this.state
+}
+func (this *activatorBundle) Start(){
+	if this.state != INSTALLED {
+		return
+	}
+	this.state = STARTING
+	this.activator.Start(this.bundleContext)
+	this.state = ACTIVE
+}
+func (this *activatorBundle) Stop(){
+	if this.state != ACTIVE {
+		return
+	}
+	this.state = STOPPING
+	this.activator.Stop(this.bundleContext)
+	this.state = RESOLVED
 }
 type pluginBundle struct {
 	id 				string
@@ -32,16 +72,7 @@ type pluginBundle struct {
 	logger			*log.Logger
 }
 func NewPluginBundle(aPlugin *plugin.Plugin, aName string, aContext BundleContext) Bundle {
-	result := pluginBundle {id : uuid.New().String(), _plugin : aPlugin, state : RESOLVED}
-	// Getting logger 
-	logServiceRef := aContext.GetService("LogService")
-	if logServiceRef != nil {
-		logService := logServiceRef.Get().(service.LogService)
-		result.logger = logService.GetLogger()
-	} else {
-		result.logger = logutil.DefaultLogger
-		result.logger.Println("Using default logger")
-	}
+	result := pluginBundle {id : uuid.New().String(), _plugin : aPlugin, state : RESOLVED, logger : GetLoggerFromContext(aContext)}
 	// Getting informations in plugin
 	sym, err := aPlugin.Lookup("Version")
 	if err == nil {
@@ -110,4 +141,16 @@ func (this *pluginBundle) Stop() {
 		function.(func(BundleContext))(this.bundleContext)
 	}
 	this.state = RESOLVED
+}
+func GetLoggerFromContext(aContext BundleContext) *Logger {
+	var logger *log.Logger
+	// Getting logger 
+	logServiceRef := aContext.GetService("LogService")
+	if logServiceRef != nil {
+		logService := logServiceRef.Get().(service.LogService)
+		logger = logService.GetLogger()
+	} else {
+		logger = logutil.DefaultLogger
+	}
+	return logger
 }

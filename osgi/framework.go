@@ -44,6 +44,9 @@ func (this *Framework) Start() {
 	// Starting
 	this.logger.Println("INFO Starting...")
 	this.state = STARTING
+	for bundle := range this.bundles {
+		bundle.Start()
+	}
 	this.loadBundles()
 	this.state = ACTIVE
 	this.logger.Println("INFO Active")
@@ -136,6 +139,15 @@ func (this *Framework) loadBundle(file os.FileInfo) {
 		context.(*bundleContextImpl).setBundle(bundle)
 		this.bundles = append(this.bundles,bundle)
 		this.logger.Println("INFO Bundle",bundle.GetBundleId(),"-", bundle.GetSymbolicName(), "(",bundle.GetVersion(),") loaded")
+	}
+}
+func (this *Framework) RegisterBundle(aBundleActivator BundleActivator) {
+	context := NewBundleContext(this)
+	bundle := NewActivatorBundle(aBundleActivator)
+	this.bundles = append(this.bundles, bundle)
+	context.(aBundle).setBundle(bundle)
+	if this.state == ACTIVE {
+		bundle.Start()
 	}
 }
 func (this *Framework) RegisterService(aName string, aService interface{}) {
